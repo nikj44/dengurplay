@@ -3,7 +3,7 @@
 import React, {useState} from 'react';
 import { View, Text, StyleSheet, Image, KeyboardAvoidingView, TouchableOpacity, ActivityIndicator} from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
-import auth from '@react-native-firebase/auth';
+import auth from '@react-native-firebase/auth'; 
 import firestore from '@react-native-firebase/firestore';
 
 
