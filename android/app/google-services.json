@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "844083278230",
+    "project_id": "dengurplaytest",
+    "storage_bucket": "dengurplaytest.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:844083278230:android:09e38fb27a68b7fe0eedb7",
+        "android_client_info": {
+          "package_name": "com.dengurplay"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "844083278230-cnr2phpqq6hndc0l2jt9js5k38114osi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAb0MKzwxhhxQwIEwlhaU6ajfODiWhnTyM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "844083278230-cnr2phpqq6hndc0l2jt9js5k38114osi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

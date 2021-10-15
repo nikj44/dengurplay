@@ -1,0 +1,41 @@
+[33mcommit 9bf5dc6c03432569e151942901f2f75ace41b7d4[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m
+Author: Nikhil Jain <nikjain1999@gmail.com>
+Date:   Wed Sep 22 19:39:43 2021 +0530
+
+    CHanges in Navigation
+
+[33mcommit 9c8e88811e52e4b91af9ac12d7d16758c92f33ff[m
+Author: Nikhil Jain <nikjain1999@gmail.com>
+Date:   Tue Sep 21 17:44:01 2021 +0530
+
+    Signup Screen UI
+
+[33mcommit 00d8c851bc8457bd1b35625da7e7fb465315f996[m
+Author: Nikhil Jain <nikjain1999@gmail.com>
+Date:   Tue Sep 21 00:55:39 2021 +0530
+
+    Install dependencies
+
+[33mcommit 31fc5e4ba7de19ff9173b0b7d7ddb32836ca9412[m
+Author: Nikhil Jain <nikjain1999@gmail.com>
+Date:   Mon Sep 20 23:46:37 2021 +0530
+
+    Update body in MainActivity.java
+
+[33mcommit b6d4a7554df3d3fea24075db8e4e8f903657b67a[m
+Author: Nikhil Jain <nikjain1999@gmail.com>
+Date:   Sat Sep 18 21:04:01 2021 +0530
+
+    Add Navigation
+
+[33mcommit 4d4b5ccc64118b9710b4b949a40ed5d7f98580a2[m
+Author: Nikhil Jain <nikjain1999@gmail.com>
+Date:   Sat Sep 18 14:03:31 2021 +0530
+
+    Add basic UI
+
+[33mcommit c33fd4d82f1bbbcefdb41c5a2457c9b71b265009[m
+Author: Nikhil Jain <nikjain1999@gmail.com>
+Date:   Thu Sep 16 20:59:29 2021 +0530
+
+    Initial Commit

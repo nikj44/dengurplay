@@ -1,0 +1,76 @@
+Firebase Notes-
+watch this - https://www.youtube.com/watch?v=TAwUzGIP23A&list=PLB97yPrFwo5ieCx1DhuVNQLFTSJyeESV2&index=3
+
+in MainActivity.java
+i have added import below package com.dengurplay
+
+
+//HomeScreen Initially Start
+import roomsdata from '../data/roomsdata.js';
+import React from 'react';
+import { View, Text, Image, StyleSheet } from 'react-native';
+//we have used map function but in future we will require flat flist -- remove this afterwards
+const HomeScreen = () => {
+  const roomlist = () => {
+    return roomsdata.map((room) => {
+      return (
+      <View key={room.id}>
+      <Text>{room.createdby}</Text>
+      <Text>{room.description}</Text>
+      <Text>{room.category}</Text>
+      <Text>{room.characters}</Text>
+      </View>
+    );
+    });
+  };
+
+return <View style={styles.styler}>{roomlist()}</View>;
+};
+
+const styles = StyleSheet.create({
+  styler: {
+    backgroundColor: '#3DB2FF',
+  }
+});
+
+export default HomeScreen
+//HomeScreen Initailly END
+
+YT - https://www.youtube.com/watch?v=huJhkqED0ig&t=560s
+
+React state cannot update on unmount component - https://stackoverflow.com/questions/53949393/cant-perform-a-react-state-update-on-an-unmounted-component
+
+#####Gifted Chat Issue
+Gifted chat is having one issue - https://github.com/FaridSafi/react-native-gifted-chat/issues/2090
+i am using patch package to solve the erorr
+see screenshot
+watch this - https://www.youtube.com/watch?v=2AVs-Yh1bS8
+#######
+
+https://stackoverflow.com/questions/33135256/floating-action-button-on-react-native
+
+
+************FLoating button ******
+<TouchableOpacity
+          style={{
+          // borderWidth: 1,
+          borderColor: 'rgba(0,0,0,0.2)',
+          alignItems: 'center',
+          justifyContent: 'center',
+          // width: 70,
+          position: 'absolute',
+          bottom: 20,
+          right: 15,
+          // height: 70,
+          // backgroundColor: '#fff',
+          // borderRadius: 100,
+          
+          }}
+        >
+        <Icon name='chatbubble-ellipses-outline' size={70} color='#01a699' />
+        </TouchableOpacity>
+
+**********************************************8
+
+https://stackoverflow.com/questions/3640764/can-i-recover-a-branch-after-its-deletion-in-git/22303923
+
