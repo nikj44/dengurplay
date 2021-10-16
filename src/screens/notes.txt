@@ -74,3 +74,6 @@ https://stackoverflow.com/questions/33135256/floating-action-button-on-react-nat
 
 https://stackoverflow.com/questions/3640764/can-i-recover-a-branch-after-its-deletion-in-git/22303923
 
+https://stackoverflow.com/questions/54954385/react-useeffect-causing-cant-perform-a-react-state-update-on-an-unmounted-comp
+
+https://stackoverflow.com/questions/64634396/typeerror-0-firestore-default-collection-doc-add-is-not-a-f

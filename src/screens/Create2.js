@@ -12,14 +12,12 @@ const Create2 = () => {
     const [title,setTitle] = useState('');
     const [description,setDescription] = useState('');
     const [category,setCategory] = useState('fantasy');
-    // const [character1,setCharacter1] = useState('');
-    // const [character2,setCharacter2] = useState('');
-    // const [gender1,setGender1] = useState('male');
-    // const [gender2,setGender2] = useState('female');
     const [characterNumber, setCharacterNumber] = useState(2);
     const [loading,setLoading] = useState(false);
     const [username,setUsername] = useState('');
     const [color,setColor] = useState("#00ff37");
+    const [status,setStatus] = useState(0);
+    const [participants,setParticipants] = useState(1);
 
     if(loading){
       return <ActivityIndicator size="large" color="green"/>
@@ -38,10 +36,7 @@ const Create2 = () => {
         const username = userInfo._data.username
         return({username, uid})
       }
-      //get username from users collection
-       //pass username in the session
-       // also pass the session details in the user collection > sessions subcollection
-       //readt that subcollection in create screen 2
+
        else{
          alert('User is not signed in')
        }
@@ -67,7 +62,9 @@ const Create2 = () => {
             createdAt: firestore.FieldValue.serverTimestamp(),
             createdBy: gotUser.username,
             createdByUid: gotUser.uid,
-            favcolor: color
+            favcolor: color,
+            status: status,
+            participants: participants,
             })
           
           firestore().
@@ -81,8 +78,27 @@ const Create2 = () => {
               characterNumber: characterNumber,
               createdAt: firestore.FieldValue.serverTimestamp(),
               createdBy: gotUser.username,
-              favcolor: color
+              favcolor: color,
               })
+
+              
+              firestore()
+               .collection('users')
+              .doc(gotUser.uid)
+              .collection('ongoing')
+              .set({
+              title: title, 
+              description: description,
+              category: category,
+              characterNumber: characterNumber,
+              createdAt: firestore.FieldValue.serverTimestamp(),
+              createdBy: gotUser.username,
+              createdByUid: gotUser.uid,
+              favcolor: color,
+              status: status,
+              participants: participants,
+              })
+
           setLoading(false)
       } catch(err){
         alert(err)

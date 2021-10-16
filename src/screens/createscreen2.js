@@ -85,6 +85,24 @@ const CreateScreen = ({user}) => {
               createdAt: firestore.FieldValue.serverTimestamp(),
               createdBy: gotUser.username,
               })
+
+              firestore()
+               .collection('users')
+              .doc(gotUser.uid)
+              .collection('ongoing')
+              .set({
+              title: item.title,
+              description: item.description,
+              category: item.category,
+              characterNumber: item.characterNumber,
+              createdAt: firestore.FieldValue.serverTimestamp(),
+              createdBy: item.createdBy,
+              createdByUid: item.createdByUid,
+              favcolor: item.favcolor,
+              status: newStatus,
+              participants: newParticipants,
+        })
+
           setLoading(false)
       } catch(err){
         alert(err)

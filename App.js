@@ -8,6 +8,8 @@ import Navigation from './src/navigation/Navigation-Main.js';
 import SignupScreen from './src/screens/signupscreen.js';
 import LoginScreen from './src/screens/loginscreen.js';
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
+import FlashMessage from "react-native-flash-message";
+
 
 const theme = {
   ...DefaultTheme,
@@ -25,6 +27,8 @@ export default function App() {
       <StatusBar backgroundColor="#00FF00" />
       <Navigation />
       </PaperProvider>
+      {/* FLash message will be last component */}
+      <FlashMessage position="bottom" />
     </>
   );
 }

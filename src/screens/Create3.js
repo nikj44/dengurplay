@@ -9,6 +9,7 @@ import auth from '@react-native-firebase/auth';
 
 const Create3 = () => {
     const [sessions,setSessions] = useState(new Array());
+    const [status, setStatus] = useState(0);
   
     const getUser = async () => {
       const user =  auth().currentUser;
@@ -59,7 +60,8 @@ const Create3 = () => {
               createdBy: hello.username,
               createdByUid: hello.uid,
               characterNumber: item.characterNumber,
-              favcolor: item.favcolor
+              favcolor: item.favcolor,
+              status: status,
               })
     }
   

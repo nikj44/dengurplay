@@ -14,6 +14,9 @@ import Create from '../screens/Create';
 import Profile from '../screens/Profile';
 import Create3 from '../screens/Create3.js';
 import Create2 from '../screens/Create2.js';
+import Home2 from '../screens/Home2.js';
+import Home3 from '../screens/Home3.js';
+import Chat2 from '../screens/Chat2.js';
 
 const Navigation = () => {
     const [user,setUser] = useState('')
@@ -61,6 +64,9 @@ const MainStack = () => {
       <Screen name="MainTab" component={MyTabs} options={{headerShown:false}} />
       <Screen name="Create2" component={Create2} options={{ title: 'Create2'}}/>
       <Screen name="Create3" component={Create3} options={{ title: 'Create3'}}/>
+      <Screen name="Home2" component={Home2} options={{ title: 'Home2'}}/>
+      <Screen name="Chat2" component={Chat2} options={{ title: 'Chat2'}}/>
+
     </Navigator>
   );
 };
