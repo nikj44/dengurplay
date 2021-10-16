@@ -15,7 +15,7 @@ import ChatScreen1 from '../screens/chatscreen.js';
 import ChatScreen2 from '../screens/chatscreen2.js';
 import Icon from 'react-native-vector-icons/Ionicons';
 import LoginScreen from '../screens/loginscreen.js';
-import SignupScreen from '../screens/signupscreen.js'
+import SignupScreen from '../screens/signupscreen.js';
 //
 // <Screen name="Profile1" component={Profile1} options={{ title: 'Profile',
 // headerRight:()=><Icon
