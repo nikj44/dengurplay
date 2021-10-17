@@ -1,5 +1,8 @@
-import React from 'react'
-import { View, Text } from 'react-native'
+import React,{useState,useEffect} from 'react';
+import {View,Text,StyleSheet} from 'react-native';
+import { GiftedChat, Bubble, InputToolbar} from 'react-native-gifted-chat'
+import auth from "@react-native-firebase/auth";
+import firestore from '@react-native-firebase/firestore';
 
 const Read2 = ({route}) => {
     // console.log("mooko", route)
@@ -7,6 +10,7 @@ const Read2 = ({route}) => {
     const {item} = route.params
     const createdByUid = item.createdByUid
     const sessionID = item.sessionID
+    const [emergencyText,setEmergencyText] = useState("Emergency Text 4")
   
     const user =  auth().currentUser
     const userUid = user.uid
@@ -88,13 +92,10 @@ const Read2 = ({route}) => {
           }}
         />
             }}
-            renderInputToolbar={(props)=>{
-         //Add the extra styles via containerStyle
-        return <InputToolbar {...props}
-        containerStyle={{borderTopWidth: 1.5, borderTopColor: 'green'}}
-        textInputStyle={{ color:"black" }}
-        />
-      }}
+            minComposerHeight={0}
+            maxComposerHeight={0}
+            minInputToolbarHeight={0}
+            renderInputToolbar={() => null}
         />
     );
 }
