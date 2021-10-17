@@ -5,7 +5,6 @@ import auth from "@react-native-firebase/auth";
 import firestore from '@react-native-firebase/firestore';
 
 const Read2 = ({route}) => {
-    // console.log("mooko", route)
     const [messages, setMessages] = useState([]);
     const {item} = route.params
     const createdByUid = item.createdByUid
@@ -16,7 +15,7 @@ const Read2 = ({route}) => {
     const userUid = user.uid
   
     const getAllMessages = async () => {
-      const querySnap = await firestore().collection('sessions')
+      const querySnap = await firestore().collection('main')
       .doc(sessionID)
       .collection('messages')
       .orderBy('createdAt','desc')
@@ -31,7 +30,7 @@ const Read2 = ({route}) => {
     }
     useEffect(() => {
       //getAllMessages()
-       const messageRef = firestore().collection('sessions')
+       const messageRef = firestore().collection('main')
       .doc(sessionID)
       .collection('messages')
       .orderBy('createdAt','desc')
@@ -70,7 +69,7 @@ const Read2 = ({route}) => {
         }
        setMessages(previousMessages => GiftedChat.append(previousMessages, mymsg))
        firestore()
-       .collection('sessions')
+       .collection('main')
        .doc(sessionID)
        .collection('messages')
        .add({...mymsg,createdAt:firestore.FieldValue.serverTimestamp()})

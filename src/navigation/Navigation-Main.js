@@ -18,6 +18,7 @@ import Home2 from '../screens/Home2.js';
 import Home3 from '../screens/Home3.js';
 import Chat2 from '../screens/Chat2.js';
 import Read2 from '../screens/Read2.js';
+import { chatThreeDots } from '../screens/SpecialFunctions.js';
 
 const Navigation = () => {
     const [user,setUser] = useState('')
@@ -66,7 +67,14 @@ const MainStack = () => {
       <Screen name="Create2" component={Create2} options={{ title: 'Create2'}}/>
       <Screen name="Create3" component={Create3} options={{ title: 'Create3'}}/>
       <Screen name="Home2" component={Home2} options={{ title: 'Home2'}}/>
-      <Screen name="Chat2" component={Chat2} options={{ title: 'Chat2'}}/>
+      <Screen name="Chat2" component={Chat2} options={{ title: 'Chat2',
+        headerRight:()=><Icon
+        name="ellipsis-vertical-outline"
+        size={34}
+        color="black"
+        style={{marginRight:10}}
+        onPress={()=>chatThreeDots()}/>
+       }}/>
       <Screen name="Read2" component={Read2} options={{ title: 'Read2'}}/>
 
     </Navigator>

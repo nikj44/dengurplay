@@ -16,7 +16,7 @@ const Chat2 = ({navigation, route}) => {
     const userUid = user.uid
   
     const getAllMessages = async () => {
-      const querySnap = await firestore().collection('sessions')
+      const querySnap = await firestore().collection('main')
       .doc(sessionID)
       .collection('messages')
       .orderBy('createdAt','desc')
@@ -31,7 +31,7 @@ const Chat2 = ({navigation, route}) => {
     }
     useEffect(() => {
       //getAllMessages()
-       const messageRef = firestore().collection('sessions')
+       const messageRef = firestore().collection('main')
       .doc(sessionID)
       .collection('messages')
       .orderBy('createdAt','desc')
@@ -70,7 +70,7 @@ const Chat2 = ({navigation, route}) => {
         }
        setMessages(previousMessages => GiftedChat.append(previousMessages, mymsg))
        firestore()
-       .collection('sessions')
+       .collection('main')
        .doc(sessionID)
        .collection('messages')
        .add({...mymsg,createdAt:firestore.FieldValue.serverTimestamp()})
