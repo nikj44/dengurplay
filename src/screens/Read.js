@@ -76,15 +76,6 @@ const Read = ({navigation}) => {
         sessionsData.sessionArray.length==0 ? setLastPost(true):setLastPost(false)
       }
     }
-
-    // const NavigateToRead2 = (item) => {
-    //   console.log("ITEM==",item)
-    //   item.characterNumber > item.participants ? navigation.navigate('Home2', {item})
-    //   : showMessage({
-    //       message: "Simple message",
-    //       type: "info",
-    //     });
-    // }
   
     const RenderCard = ({item})=>{
       return(
