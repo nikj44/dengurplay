@@ -3,6 +3,7 @@ import { View, Text, Image, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Auth from '../screens/Auth.js';
 import auth from '@react-native-firebase/auth';
 import Icon from 'react-native-vector-icons/Ionicons';
 import LoginScreen from '../screens/loginscreen.js';
@@ -67,33 +68,36 @@ const MainStack = () => {
       <Screen name="Create2" component={Create2} options={{ title: 'Create2'}}/>
       <Screen name="Create3" component={Create3} options={{ title: 'Create3'}}/>
       <Screen name="Home2" component={Home2} options={{ title: 'Home2'}}/>
-      <Screen name="Chat2" component={Chat2} options={{ title: 'Chat2',
-        headerRight:()=><Icon
-        name="ellipsis-vertical-outline"
-        size={34}
-        color="black"
-        style={{marginRight:10}}
-        onPress={()=>chatThreeDots()}/>
-       }}/>
+      <Screen name="Chat2" component={Chat2} options={{ headerShown: false}}/>
       <Screen name="Read2" component={Read2} options={{ title: 'Read2'}}/>
 
     </Navigator>
   );
 };
 
-const AuthStack = () => {
-    return(
-      <Navigator>
-        <Screen name="Login" component={LoginScreen} options={{headerShown: false}} />
-        <Screen name="Signup" component={SignupScreen} options={{headerShown: false}} />
-      </Navigator>
-    );
-  };
+// const AuthStack = () => {
+//     return(
+//       <Navigator>
+//         <Screen name="Auth" component={Auth} options={{headerShown: false}} />
+//         {/* <Screen name="Login" component={LoginScreen} options={{headerShown: false}} />
+//         <Screen name="Signup" component={SignupScreen} options={{headerShown: false}} /> */}
+//       </Navigator>
+//     );
+//   };
 
   useEffect(()=>{
     const unregister = auth().onAuthStateChanged(userExist=>{
-      if(userExist) setUser(userExist)
-      else setUser('')
+      if(userExist) {
+        setUser(userExist)
+        console.log('USer Exists')
+        //here we have to check if the user is new or old
+        //if new then Details page
+        //if old then main stack
+      } 
+      else {
+        setUser('')
+        console.log('User doesnt exissts')
+      }
     })
     return ()=>{
       unregister()
@@ -105,7 +109,7 @@ return (
   {user?
     <MainStack />
   :
-    <AuthStack />
+    <Auth />
   }
   </NavigationContainer>
 );

@@ -78,3 +78,6 @@ https://stackoverflow.com/questions/54954385/react-useeffect-causing-cant-perfor
 
 https://stackoverflow.com/questions/64634396/typeerror-0-firestore-default-collection-doc-add-is-not-a-f
 
+pagination realtime - https://www.youtube.com/watch?v=1chV50D5BVU
+
+FOllwo this for SHA 1 - https://stackoverflow.com/a/37337469/13733008

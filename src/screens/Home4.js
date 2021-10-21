@@ -34,25 +34,25 @@ const Home = ({navigation}) => {
       return {sessionArray, lastVisible}
     }
   
-    // const getMoreSessions = async (startAfter,sessionsPerLoad) => {
+    const getMoreSessions = async (startAfter,sessionsPerLoad) => {
   
-    //   const sessionArray = [];
+      const sessionArray = [];
   
-    //   const querySnap = await firestore()
-    //     .collection('sessions')
-    //     .orderBy('createdAt', 'desc')
-    //     .startAfter(startAfter)
-    //     .limit(sessionsPerLoad)
-    //     .get()
-    //   const lastVisible = querySnap.docs[querySnap.docs.length - 1]
+      const querySnap = await firestore()
+        .collection('sessions')
+        .orderBy('createdAt', 'desc')
+        .startAfter(startAfter)
+        .limit(sessionsPerLoad)
+        .get()
+      const lastVisible = querySnap.docs[querySnap.docs.length - 1]
   
-    //   querySnap.forEach((doc)=> {
-    //     let sessionData = doc.data()
-    //     sessionData.sessionID = doc.id
-    //     sessionArray.push(sessionData)
-    //   })
-    //   return {sessionArray, lastVisible}
-    // }
+      querySnap.forEach((doc)=> {
+        let sessionData = doc.data()
+        sessionData.sessionID = doc.id
+        sessionArray.push(sessionData)
+      })
+      return {sessionArray, lastVisible}
+    }
   
     useEffect(()=>{
       getSession()
@@ -69,15 +69,15 @@ const Home = ({navigation}) => {
       // console.log('Last VIsible',sessionsData.lastVisible)
     }
   
-    // const getMoreSession = async () => {
-    //   if(!lastPost){
-    //     const sessionsData = await getMoreSessions(startAfter,sessionsPerLoad)
-    //     setSessions([...sessions, ...sessionsData.sessionArray])
-    //     // console.log('More Session',sessions)
-    //     setStartAfter(sessionsData.lastVisible)
-    //     sessionsData.sessionArray.length==0 ? setLastPost(true):setLastPost(false)
-    //   }
-    // }
+    const getMoreSession = async () => {
+      if(!lastPost){
+        const sessionsData = await getMoreSessions(startAfter,sessionsPerLoad)
+        setSessions([...sessions, ...sessionsData.sessionArray])
+        // console.log('More Session',sessions)
+        setStartAfter(sessionsData.lastVisible)
+        sessionsData.sessionArray.length==0 ? setLastPost(true):setLastPost(false)
+      }
+    }
 
     const NavigateToHome2 = (item) => {
       console.log("ITEM==",item)
@@ -114,11 +114,11 @@ const Home = ({navigation}) => {
         data={sessions}
         renderItem={({item})=><RenderCard item={item} />}
         keyExtractor={(item)=>item.sessionID+new Date()}
-        // onEndReached={getMoreSession}
-        // onEndReachedThreshold={0.01}
-        // scrollEventThrottle={150}
-        // ListFooterComponent={()=>
-        //   !lastPost && <ActivityIndicator />}
+        onEndReached={getMoreSession}
+        onEndReachedThreshold={0.01}
+        scrollEventThrottle={150}
+        ListFooterComponent={()=>
+          !lastPost && <ActivityIndicator />}
        />
        </View>
   );

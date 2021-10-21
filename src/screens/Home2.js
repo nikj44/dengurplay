@@ -6,7 +6,8 @@ import auth from "@react-native-firebase/auth";
 const Home2 = ({route, navigation}) => {
     const {item} = route.params
     const [newStatus,setNewStatus] = useState(0)
-    const [newParticipants,setNewParticipants] = useState(1)
+    const [totalPar,setTotalPar] = useState(1)
+    const [currPar,setCurrPar] = useState(0)
 
     const getUser = async () => {
 
@@ -31,21 +32,40 @@ const Home2 = ({route, navigation}) => {
       }
       try{
         const gotUser = await getUser()
-        firestore().
-        collection('main')
-        .doc(item.sessionID)
-        .set({
-            title: item.title,
-            description: item.description,
-            category: item.category,
-            characterNumber: item.characterNumber,
-            createdAt: firestore.FieldValue.serverTimestamp(),
-            createdBy: item.createdBy,
-            createdByUid: item.createdByUid,
-            favcolor: item.favcolor,
-            status: newStatus,
-            participants: newParticipants,
-        })
+        
+        //if doc is there already then get current user, and 
+        // add + 1 to it, else write full document with current user =1
+        if(
+          firestore()
+          .collection('main')
+          .doc(item.sessionID)
+          .get()
+          .then(function(querySnap){
+            if (doc.exists) {
+              const sessionData = doc.data()
+              const current = sessionData.currentPar
+              setCurrPar(current)
+            }else {
+              firestore().
+              collection('main')
+              .doc(item.sessionID)
+              .set({
+                  title: item.title,
+                  description: item.description,
+                  category: item.category,
+                  characterNumber: item.characterNumber,
+                  createdAt: firestore.FieldValue.serverTimestamp(),
+                  createdBy: item.createdBy,
+                  createdByUid: item.createdByUid,
+                  favcolor: item.favcolor,
+                  status: newStatus,
+                  totalPar: setTotalPar,
+                  // currentPar: 
+              })
+            }
+          })
+        )
+
 
         firestore().
         collection('users')
@@ -61,7 +81,7 @@ const Home2 = ({route, navigation}) => {
             createdByUid: item.createdByUid,
             favcolor: item.favcolor,
             status: newStatus,
-            participants: newParticipants,
+            totalPar: totalPar,
         })
 
       } catch(err){
