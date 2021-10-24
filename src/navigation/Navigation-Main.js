@@ -20,10 +20,16 @@ import Home3 from '../screens/Home3.js';
 import Chat2 from '../screens/Chat2.js';
 import Read2 from '../screens/Read2.js';
 import { chatThreeDots } from '../screens/SpecialFunctions.js';
+import firestore from '@react-native-firebase/firestore';
+import UserData from '../screens/UserData.js';
+
 
 const Navigation = () => {
     const [user,setUser] = useState('')
     const {Navigator, Screen } = createStackNavigator();
+    const [newUser,setNewUser] = useState(null);
+    const [newUid,setNewUid] = useState(null);
+    const [newEmail,setNewEmail] = useState(null);
 
 const Tab = createBottomTabNavigator();
 
@@ -70,6 +76,7 @@ const MainStack = () => {
       <Screen name="Home2" component={Home2} options={{ title: 'Home2'}}/>
       <Screen name="Chat2" component={Chat2} options={{ headerShown: false}}/>
       <Screen name="Read2" component={Read2} options={{ title: 'Read2'}}/>
+      <Screen name="UserData" component={UserData} options={{ title: 'UserData'}}/>
 
     </Navigator>
   );
@@ -78,23 +85,46 @@ const MainStack = () => {
 // const AuthStack = () => {
 //     return(
 //       <Navigator>
-//         <Screen name="Auth" component={Auth} options={{headerShown: false}} />
-//         {/* <Screen name="Login" component={LoginScreen} options={{headerShown: false}} />
-//         <Screen name="Signup" component={SignupScreen} options={{headerShown: false}} /> */}
+//         <Screen name="Auth" component={Auth} />
+//         <Screen name="Login" component={LoginScreen} options={{headerShown: false}} />
+//         <Screen name="Signup" component={SignupScreen} options={{headerShown: false}} />
 //       </Navigator>
 //     );
 //   };
 
-  useEffect(()=>{
+  // const navigationFunc = () => {
+  //   // console.log('Userrr',user)
+  //   // console.log('newUser',newUser)
+  //   console.log('navigationFunc')
+  //   if(user = !null && newUser == 1)
+  //        <UserData />
+  //   else if(user = !null && newUser == 0)
+  //       <MainStack />
+  //   else if(user = null)
+  //        <Auth />
+  // }
+
+  useEffect(()=> {
     const unregister = auth().onAuthStateChanged(userExist=>{
       if(userExist) {
         setUser(userExist)
-        console.log('USer Exists')
+        setNewEmail(userExist.email)
+        setNewUid(userExist.uid)
         //here we have to check if the user is new or old
+        console.log(userExist.uid)
+        const userDoc = firestore().collection('users').doc(userExist.uid).get()
+        if(!userDoc.exists) {
+          //no user exists navigate to UserData.js
+          setNewUser(1)
+        }else {
+          //user exists navigate to mainstack
+          setNewUser(0)
+        }
         //if new then Details page
         //if old then main stack
       } 
       else {
+        //user hasn't signed in
         setUser('')
         console.log('User doesnt exissts')
       }
@@ -104,13 +134,8 @@ const MainStack = () => {
     }
 },[])
 return (
-
   <NavigationContainer>
-  {user?
-    <MainStack />
-  :
-    <Auth />
-  }
+    {user ?  (newUser==1 ?  <UserData uid={newUid} email={newEmail}/>  : (newUser==0 && <MainStack /> ))  : <Auth />}
   </NavigationContainer>
 );
 };

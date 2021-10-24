@@ -31,6 +31,7 @@ const Auth = () => {
             } else {
               // console.log("Error COde = " || error.code)
               alert('Something other happened');
+              console.log("Error while logging=",error)
               // some other error happened
             }
           }
@@ -38,9 +39,9 @@ const Auth = () => {
 
     // useEffect(()=>{
 
-    //     GoogleSignin.configure({
-    //         webClientId: '844083278230-cnr2phpqq6hndc0l2jt9js5k38114osi.apps.googleusercontent.com',
-    //       }); 
+        GoogleSignin.configure({
+            webClientId: '844083278230-cnr2phpqq6hndc0l2jt9js5k38114osi.apps.googleusercontent.com',
+          }); 
 
         // const unregister = auth().onAuthStateChanged(userExist=>{
         //     if(userExist) {
