@@ -1,5 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { TextInput, Button  } from 'react-native-paper';
+import profiledata from '../data/profiledata';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -19,7 +21,6 @@ import Home2 from '../screens/Home2.js';
 import Home3 from '../screens/Home3.js';
 import Chat2 from '../screens/Chat2.js';
 import Read2 from '../screens/Read2.js';
-import { chatThreeDots } from '../screens/SpecialFunctions.js';
 import firestore from '@react-native-firebase/firestore';
 import UserData from '../screens/UserData.js';
 
@@ -30,6 +31,11 @@ const Navigation = () => {
     const [newUser,setNewUser] = useState(null);
     const [newUid,setNewUid] = useState(null);
     const [newEmail,setNewEmail] = useState(null);
+
+    const [username, setUsername] = useState('');
+    const [coins, setCoins] = useState(200);
+    const [diamonds, setDiamonds] = useState(0);
+    const [profileNum,setProfileNum] = useState(1);
 
 const Tab = createBottomTabNavigator();
 
@@ -92,6 +98,77 @@ const MainStack = () => {
 //     );
 //   };
 
+const UserData = () => {
+
+  // const [username, setUsername] = useState('');
+  // const [coins, setCoins] = useState(200);
+  // const [diamonds, setDiamonds] = useState(0);
+  // const [profileNum,setProfileNum] = useState(1);
+
+  const submitInfo = async () => {
+    if(!username || !profileNum){
+      alert("Please fill all the details")
+      return
+    }
+    try{
+        await firestore().collection('users').doc(newUid).set({
+          username:username,
+          email:newEmail,
+          uid:newUid,
+          coins:coins,
+          diamonds:diamonds,
+          profileNum:profileNum,
+          })
+          setNewUser(0)
+    }catch(err){
+      alert("Someting went wrong")
+      console.log('Errrr',err)
+    }
+  }
+
+  const ProfilePic = ({item}) => {
+    return (
+      <TouchableOpacity onPress={()=>setProfileNum(item.picOption)}>
+        <View style={{ flex: 1}}>
+        {/* <Text>{item.picOption}</Text> */}
+        {/* <Text>{item.picUrl}</Text> */}
+        <Image
+        style={{ width: 80, height: 80, borderRadius: 100, borderWidth: 5}}
+        source={item.picUrl} />
+        </View>
+        </TouchableOpacity>
+      )
+    }
+
+  return (
+      <View>
+        <View>
+
+        <Text>Enter details !!</Text>
+        <TextInput
+          label="Username"
+          value={username}
+          onChangeText={(text)=>setUsername(text)}
+          mode="outlined"
+          />
+          {/* <Text>{props.email}</Text>
+          <Text>{props.uid}</Text> */}
+        </View>
+        <View>
+        <FlatList
+            keyExtractor={item=> item.picOption}
+            numColumns={4}
+            // style={{flex: 1}}
+            data={profiledata}
+            renderItem={ProfilePic}
+          />
+          </View>
+          <Button mode="contained" onPress={()=>submitInfo()}>Continue</Button>
+         </View>
+  )
+}
+
+
   // const navigationFunc = () => {
   //   // console.log('Userrr',user)
   //   // console.log('newUser',newUser)
@@ -105,18 +182,21 @@ const MainStack = () => {
   // }
 
   useEffect(()=> {
-    const unregister = auth().onAuthStateChanged(userExist=>{
+    const unregister = auth().onAuthStateChanged(async userExist=>{
       if(userExist) {
         setUser(userExist)
         setNewEmail(userExist.email)
         setNewUid(userExist.uid)
         //here we have to check if the user is new or old
         console.log(userExist.uid)
-        const userDoc = firestore().collection('users').doc(userExist.uid).get()
+        const userDoc = await firestore().collection('users').doc(userExist.uid).get()
         if(!userDoc.exists) {
+          console.log('userdoc',userDoc)
+          console.log('User not exists navigating to userdata')
           //no user exists navigate to UserData.js
           setNewUser(1)
         }else {
+          console.log('User exists navigating to mainstack')
           //user exists navigate to mainstack
           setNewUser(0)
         }
@@ -135,7 +215,7 @@ const MainStack = () => {
 },[])
 return (
   <NavigationContainer>
-    {user ?  (newUser==1 ?  <UserData uid={newUid} email={newEmail}/>  : (newUser==0 && <MainStack /> ))  : <Auth />}
+    {user ?  (newUser==1 ?  <UserData />  : (newUser==0 && <MainStack /> ))  : <Auth />}
   </NavigationContainer>
 );
 };
