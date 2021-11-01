@@ -20,18 +20,24 @@ import Create2 from '../screens/Create2.js';
 import Home2 from '../screens/Home2.js';
 import Home3 from '../screens/Home3.js';
 import Chat2 from '../screens/Chat2.js';
+import Create4 from '../screens/Create4Temp.js';
 import Read2 from '../screens/Read2.js';
 import firestore from '@react-native-firebase/firestore';
 import UserData from '../screens/UserData.js';
+import CreateScreen3 from '../screens/createscreen3';
+import HomeScreen from '../screens/homescreen';
+import Chat3 from '../screens/Chat3';
 
 
 const Navigation = () => {
+    // these in general
     const [user,setUser] = useState('')
     const {Navigator, Screen } = createStackNavigator();
     const [newUser,setNewUser] = useState(null);
     const [newUid,setNewUid] = useState(null);
     const [newEmail,setNewEmail] = useState(null);
 
+    //these for UserData
     const [username, setUsername] = useState('');
     const [coins, setCoins] = useState(200);
     const [diamonds, setDiamonds] = useState(0);
@@ -39,11 +45,12 @@ const Navigation = () => {
 
 const Tab = createBottomTabNavigator();
 
+//MyTabs = Bottom Navigator
 const MyTabs = () => {
 
   return (
     <Tab.Navigator>
-      <Tab.Screen name="Home" component={Home} options={{tabBarIcon: () => {
+      <Tab.Screen name="Home" component={Home3} options={{tabBarIcon: () => {
         return(<Icon name="home-outline" color="black" size={25} />);},
         title: 'Active RPGs'
       }}/>
@@ -73,14 +80,16 @@ const MyTabs = () => {
   );
 };
 
+//mainStack = Stack Navigator consisting of Bottom + All other Screens
 const MainStack = () => {
   return(
     <Navigator>
       <Screen name="MainTab" component={MyTabs} options={{headerShown:false}} />
       <Screen name="Create2" component={Create2} options={{ title: 'Create2'}}/>
-      <Screen name="Create3" component={Create3} options={{ title: 'Create3'}}/>
+      <Screen name="Create3" component={Create4} options={{ title: 'Create3'}}/>
       <Screen name="Home2" component={Home2} options={{ title: 'Home2'}}/>
       <Screen name="Chat2" component={Chat2} options={{ headerShown: false}}/>
+      <Screen name="Chat3" component={Chat3} options={{ headerShown: false}}/>
       <Screen name="Read2" component={Read2} options={{ title: 'Read2'}}/>
       <Screen name="UserData" component={UserData} options={{ title: 'UserData'}}/>
 
@@ -98,21 +107,22 @@ const MainStack = () => {
 //     );
 //   };
 
-const UserData = () => {
+//UserData = for inputtig data for new Users
+const UserData = (props) => {
 
-  // const [username, setUsername] = useState('');
-  // const [coins, setCoins] = useState(200);
-  // const [diamonds, setDiamonds] = useState(0);
-  // const [profileNum,setProfileNum] = useState(1);
+  const tempName = props.username
 
+  const [tempUser,setTempUser] = useState(tempName)
   const submitInfo = async () => {
-    if(!username || !profileNum){
-      alert("Please fill all the details")
-      return
-    }
+    //if all Info is not entered
+    // if(!username || !profileNum){
+    //   alert("Please fill all the details")
+    //   return
+    // }
     try{
+      //If Doc named "User.Uid" exists, then user is not new
         await firestore().collection('users').doc(newUid).set({
-          username:username,
+          username:tempUser,
           email:newEmail,
           uid:newUid,
           coins:coins,
@@ -126,12 +136,11 @@ const UserData = () => {
     }
   }
 
+  //Component for Profile
   const ProfilePic = ({item}) => {
     return (
       <TouchableOpacity onPress={()=>setProfileNum(item.picOption)}>
         <View style={{ flex: 1}}>
-        {/* <Text>{item.picOption}</Text> */}
-        {/* <Text>{item.picUrl}</Text> */}
         <Image
         style={{ width: 80, height: 80, borderRadius: 100, borderWidth: 5}}
         source={item.picUrl} />
@@ -139,22 +148,24 @@ const UserData = () => {
         </TouchableOpacity>
       )
     }
+    
+  useEffect(()=>{
+    console.log(tempName)
+  },[tempName])
 
+    // UserData Return
   return (
       <View>
-        <View>
-
-        <Text>Enter details !!</Text>
-        <TextInput
-          label="Username"
-          value={username}
-          onChangeText={(text)=>setUsername(text)}
-          mode="outlined"
-          />
-          {/* <Text>{props.email}</Text>
-          <Text>{props.uid}</Text> */}
-        </View>
-        <View>
+        {/* <View> */}
+         <Text>Enter details !!</Text>
+          <TextInput
+            label="Username"
+            value={tempUser}
+            onChangeText={(text)=>setTempUser(text)}
+            mode="outlined"
+            />
+        {/* </View>
+        <View> */}
         <FlatList
             keyExtractor={item=> item.picOption}
             numColumns={4}
@@ -162,10 +173,11 @@ const UserData = () => {
             data={profiledata}
             renderItem={ProfilePic}
           />
-          </View>
+          {/* </View> */}
           <Button mode="contained" onPress={()=>submitInfo()}>Continue</Button>
          </View>
   )
+
 }
 
 
@@ -214,6 +226,7 @@ const UserData = () => {
     }
 },[])
 return (
+  //If User Exists check, (if its new then UserData else Mainstack) else Auth
   <NavigationContainer>
     {user ?  (newUser==1 ?  <UserData />  : (newUser==0 && <MainStack /> ))  : <Auth />}
   </NavigationContainer>

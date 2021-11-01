@@ -5,9 +5,10 @@ import auth from "@react-native-firebase/auth";
 
 const Home2 = ({route, navigation}) => {
     const {item} = route.params
+    console.log('item from home 2',item)
     const [newStatus,setNewStatus] = useState(0)
     const [totalPar,setTotalPar] = useState(1)
-    const [currPar,setCurrPar] = useState(0)
+    // const [currPar,setCurrPar] = useState(0)
 
     const getUser = async () => {
 
@@ -26,45 +27,51 @@ const Home2 = ({route, navigation}) => {
     }
 
     const pressFunction = async (item) => {
-      setNewParticipants(item.participants + 1)
-      if(newParticipants > 1){
-         setNewStatus(1)
-      }
+      // setCurrPar(item.currPar + 1)
+      // if(currPar > 1){
+      //    setNewStatus(1)
+      // }
       try{
         const gotUser = await getUser()
-        
-        //if doc is there already then get current user, and 
-        // add + 1 to it, else write full document with current user =1
-        if(
-          firestore()
-          .collection('main')
-          .doc(item.sessionID)
-          .get()
-          .then(function(querySnap){
-            if (doc.exists) {
-              const sessionData = doc.data()
-              const current = sessionData.currentPar
-              setCurrPar(current)
-            }else {
-              firestore().
-              collection('main')
-              .doc(item.sessionID)
-              .set({
-                  title: item.title,
-                  description: item.description,
-                  category: item.category,
-                  characterNumber: item.characterNumber,
-                  createdAt: firestore.FieldValue.serverTimestamp(),
-                  createdBy: item.createdBy,
-                  createdByUid: item.createdByUid,
-                  favcolor: item.favcolor,
-                  status: newStatus,
-                  totalPar: setTotalPar,
-                  // currentPar: 
-              })
-            }
-          })
-        )
+        console.log('ITEM KEY1',item.key)
+      //   //if doc is there already then get current user, and 
+      //   // add + 1 to it, else write full document with current user =1
+      //   if(
+      //     firestore()
+      //     .collection('main')
+      //     .doc(item.key)
+      //     .get()
+      //     .then((doc)=> {
+      //       if (doc.exists) {
+      //         const sessionData = doc.data()
+      //         const current = sessionData.currentPar
+      //         setCurrPar(current)
+      //       }else {
+                                                      firestore().
+                                                      collection('main')
+                                                      .doc(item.key)
+                                                      .set({
+                                                          title: item.title,
+                                                          description: item.description,
+                                                          category: item.category,
+                                                          currPar: item.currPar,
+                                                          createdAt: firestore.FieldValue.serverTimestamp(),
+                                                          crByUsername: item.crByUsername,
+                                                          crByUid: item.crByUid,
+                                                          status: newStatus,
+                                                          totalPar: item.totalPar,
+                                                          // currentPar: 
+                                                      })
+        //     }
+        //   })
+        // )
+
+        firestore()
+        .collection('sessions')
+        .doc(item.key)
+        .update({
+          currPar: firestore.FieldValue.increment(1)
+        })
 
 
         firestore().
@@ -75,20 +82,19 @@ const Home2 = ({route, navigation}) => {
             title: item.title,
             description: item.description,
             category: item.category,
-            characterNumber: item.characterNumber,
+            currPar: item.currPar,
             createdAt: firestore.FieldValue.serverTimestamp(),
-            createdBy: item.createdBy,
-            createdByUid: item.createdByUid,
-            favcolor: item.favcolor,
-            status: newStatus,
-            totalPar: totalPar,
+            crByUsername: item.crByUsername,
+            crByUid: item.crByUid,
+            // status: newStatus,
+            totalPar: item.totalPar,
         })
 
       } catch(err){
         console.log("Errr", err)
         alert(err)
       }
-      navigation.navigate('Chat2', {item});
+      navigation.navigate('Chat3', {item});
     } 
 
     return (
@@ -96,7 +102,7 @@ const Home2 = ({route, navigation}) => {
         <Text>I'm HomeScreen2</Text>
         <Text>Title = {item.title}</Text>
         <Text>Description = {item.description}</Text>
-        <Text>ID = {item.sessionID}</Text>
+        <Text>ID = {item.key}</Text>
         <Button
           title="Chat"
           onPress={() => {

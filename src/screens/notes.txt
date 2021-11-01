@@ -81,3 +81,16 @@ https://stackoverflow.com/questions/64634396/typeerror-0-firestore-default-colle
 pagination realtime - https://www.youtube.com/watch?v=1chV50D5BVU
 
 FOllwo this for SHA 1 - https://stackoverflow.com/a/37337469/13733008
+
+Live Pagination is not possible = https://stackoverflow.com/a/47328868/13733008
+So on homeoage use = onsnapshot + No pagination, bec we will delete inactive sessions  after 24 hours 
+ON read page = no onsnapshot required = use get - Done
+on Chat Ongoing = use onsnapshot + No pagination - Done
+on Chat Sessions (Create 3) = use get + pagination - done
+
+Home Page as long as currPar < TotalPar session homepage par rehta hai
+For ex. 1/1- remove from Home Page
+FOr ex. 3/5- stay at homeoage
+
+Chat Page
+Whenever someone joins the chat

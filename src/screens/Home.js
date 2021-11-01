@@ -93,13 +93,13 @@ const Home = ({navigation}) => {
         <TouchableOpacity onPress={()=>NavigateToHome2(item)}>
         <View style={{padding: 10}}>
           <Text>Title= {item.title}</Text>
-          <Text>CreatedBy= {item.createdBy}</Text>
+          <Text>CreatedBy= {item.crByUsername}</Text>
           <Text>Description= {item.description}</Text>
           <Text>Category= {item.category}</Text>
-          <Text>createdbyuid= {item.createdByUid}</Text>
+          <Text>createdbyuid= {item.crByUid}</Text>
           <Text>At= {item.createdAt.toLocaleString()}</Text>
-          <Text>fav Color= {item.favcolor}</Text>
-          <Text>characterNumber= {item.characterNumber}</Text>
+          <Text>characterNumber= {item.totalPar}</Text>
+          <Text>presentNumber= {item.currPar}</Text>
           <Text>status= {item.status}</Text>
         </View>
         </TouchableOpacity>

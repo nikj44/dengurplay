@@ -1,40 +1,36 @@
 
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {View, Text, StyleSheet, Image, ScrollView, ActivityIndicator} from 'react-native';
 import { TextInput,Button } from 'react-native-paper';
 import {Picker} from '@react-native-picker/picker';
 import firestore from '@react-native-firebase/firestore';
 import auth from "@react-native-firebase/auth";
-import ColorPicker from 'react-native-wheel-color-picker'
 
 const Create2 = () => {
     // console.log('User',user)
     const [title,setTitle] = useState('');
     const [description,setDescription] = useState('');
     const [category,setCategory] = useState('fantasy');
-    const [characterNumber, setCharacterNumber] = useState(2);
+    const [totalPar, setTotalPar] = useState(2);
     const [loading,setLoading] = useState(false);
-    const [username,setUsername] = useState('');
-    const [color,setColor] = useState("#00ff37");
     const [status,setStatus] = useState(0);
-    const [participants,setParticipants] = useState(1);
+    const [currPar,setCurrPar] = useState(1);
+    // const [sessionID,setSessionID] = useState('')
 
     if(loading){
       return <ActivityIndicator size="large" color="green"/>
     }
 
-    // https://firebase.google.com/docs/auth/web/manage-users#get_the_currently_signed-in_user
-
-
     const getUser = async () => {
-
+      //take info from user
       const user = auth().currentUser;
       if (user) {
         const uid = user.uid
         const userInfo = await firestore().collection('users').
                                            doc(uid).get()
         const username = userInfo._data.username
-        return({username, uid})
+        const profileNum = userInfo._data.profileNum
+        return({username, uid, profileNum})
       }
 
        else{
@@ -42,66 +38,77 @@ const Create2 = () => {
        }
     }
 
-
+    //Create a session
     const newCreate = async () => {
       setLoading(true)
-      if(!title || !description || !category || !characterNumber){
+      if(!title || !description || !category || !totalPar){
           alert("Fill all the details")
           setLoading(false)
           return
         }
       try{
+        //creating a doc in sessions
         const gotUser = await getUser()
-        firestore().
-          collection('sessions')
+        const docRef = await firestore()
+          .collection('sessions')
           .add({
             title: title,
             description: description,
             category: category,
-            characterNumber: characterNumber,
+            totalPar: totalPar,
+            currPar: currPar,
             createdAt: firestore.FieldValue.serverTimestamp(),
-            createdBy: gotUser.username,
-            createdByUid: gotUser.uid,
-            favcolor: color,
+            crByUid: gotUser.uid,
+            crByUsername: gotUser.username,
+            crByProfile: gotUser.profileNum,
             status: status,
-            participants: participants,
+            // sessionID: sessionID,
             })
+
+            // console.log('docref.id',docRef.id)
+            // //read document Id
+            // await firestore()
+            // .collection('sessions')
+            // .doc(docRef.id)
+            // .update({
+            //   sessionID: docRef.id
+            //   })
           
-          firestore().
-            collection('users')
+          //Add in User=> UserSessions for Create 3
+          await firestore()
+            .collection('users')
             .doc(gotUser.uid)
             .collection('usersessions')
             .add({
               title: title,
               description: description,
               category: category,
-              characterNumber: characterNumber,
-              createdAt: firestore.FieldValue.serverTimestamp(),
-              createdBy: gotUser.username,
-              favcolor: color,
+              totalPar: totalPar,
               })
 
-              
-              firestore()
+              //Add in User=> Ongoing for Chat Tab
+              await firestore()
                .collection('users')
               .doc(gotUser.uid)
               .collection('ongoing')
-              .set({
-              title: title, 
-              description: description,
-              category: category,
-              characterNumber: characterNumber,
-              createdAt: firestore.FieldValue.serverTimestamp(),
-              createdBy: gotUser.username,
-              createdByUid: gotUser.uid,
-              favcolor: color,
-              status: status,
-              participants: participants,
+              .add({
+                title: title,
+                description: description,
+                category: category,
+                totalPar: totalPar,
+                currPar: currPar,
+                createdAt: firestore.FieldValue.serverTimestamp(),
+                crByUid: gotUser.uid,
+                crByUsername: gotUser.username,
+                crByProfile: gotUser.profileNum,
+                status: status,
+                sID: docRef.id
               })
 
           setLoading(false)
       } catch(err){
         alert(err)
+        console.log('main error',err)
         setLoading(false)
       }
     }
@@ -127,7 +134,7 @@ return(
       mode="outlined"
       multiline
       numberOfLines={4}
-      style={styles.description}
+      // style={styles.description}
       />
     <Text>Category :-</Text>
     <Picker
@@ -143,8 +150,8 @@ return(
     </Picker>
     <Text># of Characters :-</Text>
     <Picker 
-      selectedValue={characterNumber}
-      onValueChange={(itemValue)=>setCharacterNumber(itemValue)}
+      selectedValue={totalPar}
+      onValueChange={(itemValue)=>setTotalPar(itemValue)}
       mode="dropdown"
     >
       <Picker.Item label="2" value='2' />
@@ -155,14 +162,6 @@ return(
       <Picker.Item label="7" value='7' />
       </Picker>
       </View>
-    <Text style={{paddingLeft: 20}}>Favorite Color</Text>
-    <ColorPicker
-        color={color}
-        onColorChange={()=>setColor(color)}
-        sliderSize={40}
-        thumbSize={40}
-        noSnap={true}
-      />
     <View style={{paddingHorizontal:50, marginTop:20}}>
     <Button
       mode="contained"
@@ -173,6 +172,7 @@ return(
     </View>
     </ScrollView>
   );
+
 }
 
 export default Create2

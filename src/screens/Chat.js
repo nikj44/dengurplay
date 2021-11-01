@@ -2,14 +2,14 @@ import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
-  StyleSheet, FlatList, TouchableOpacity, Alert
+  StyleSheet, FlatList, TouchableOpacity, Alert, ActivityIndicator
 } from 'react-native';
-import firestore from '@react-native-firebase/firestore';
+import firestore, { firebase } from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 
 const Chat = ({navigation, route}) => {
     const [sessions,setSessions] = useState(new Array());
-    const [status, setStatus] = useState(0);
+    const [loading, setLoading] = useState(true);
   
     const getUser = async () => {
       const user =  auth().currentUser;
@@ -21,22 +21,54 @@ const Chat = ({navigation, route}) => {
     }
   
     const getOngoingSessions = async() => {
-  
+      const nowDate = new Date()
       const sessionArray = [];
       const gotUser = await getUser()
   
-      const querySnap = await firestore().collection('users')
+      const subscriber =  await firestore()
+      .collection('users')
       .doc(gotUser.uid)
       .collection('ongoing')
-      .get()
-     
-      querySnap.forEach((doc)=>{
-        let sessionsData = doc.data()
-        sessionsData.sessionID = doc.id
-        sessionArray.push(sessionsData)
-      })
-      const sessionsData = sessionArray
-      setSessions([...sessions, ...sessionsData])
+      .onSnapshot(querySnap => {
+        const sessionArray = [];
+
+        querySnap.forEach(documentSnap => {
+          sessionArray.push({
+            ...documentSnap.data(),
+            key: documentSnap.id,
+          })
+        })
+        setSessions(sessionArray)
+        setLoading(false)
+        try{
+        querySnap.docChanges().forEach((change)=>{
+          if(change.type === "modified"){
+            if(change.doc.data().currPar == 0){
+              firestore()
+              .collection('users')
+              .doc(gotUser.uid)
+              .collection('ongoing')
+              .doc(change.doc.id)
+              .delete()
+            }
+
+            const minusDate = nowDate - change.doc.data().createdAt.toDate()
+            const minusHours = minusDate/3600000
+            if (minusHours > 500 && change.doc.data().currPar == 1){
+              firestore()
+              .collection('users')
+              .doc(gotUser.uid)
+              .collection('ongoing')
+              .doc(change.doc.id)
+              .delete()
+            }
+          }
+
+        })
+      }catch{
+        console.log('Error at Chat Page HEre')
+      }
+      })   
     }
   
     // const copySession = async(item) => {
@@ -76,10 +108,15 @@ const Chat = ({navigation, route}) => {
     //   )
     // }
   
-    useEffect(()=>{
-      getOngoingSessions()
-    },[])
+    useEffect(async ()=>{
+      await getOngoingSessions()
+      return () => subscriber(); // This worked for me
+    },[]);
   
+    if (loading) {
+      return <ActivityIndicator />;
+    }
+
     const RenderCard = ({item})=>{
       return(
         <TouchableOpacity
@@ -98,7 +135,7 @@ const Chat = ({navigation, route}) => {
        <FlatList
           data={sessions}
           renderItem={({item})=><RenderCard item={item} />}
-          keyExtractor={(item)=>item.sessionID+new Date()}
+          // keyExtractor={(item)=>item.sessionID+new Date()}
        />
       </View>);
 }

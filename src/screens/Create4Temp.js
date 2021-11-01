@@ -23,10 +23,11 @@ const Create3 = () => {
                                              doc(user.uid).get()
           const username = userInfo._data.username
           const uid = userInfo._data.uid
-          return({username, uid})
+          const profileNum = userInfo._data.profileNum
+          return({username, uid, profileNum})
     }
   
-    const getUserSessions = async () => {
+    const getUserSessions = async (sessionsPerLoad) => {
   
       const sessionArray = [];
       const gotUser = await getUser()
@@ -37,25 +38,26 @@ const Create3 = () => {
       .collection('usersessions')
       .limit(sessionsPerLoad)
       .get()
-
+    
+      // console.log('Last Visible 0 = ',lastVisible)
       const lastVisible = querySnap.docs[querySnap.docs.length - 1]
-   
-      querySnap.forEach((doc)=>{
-        let sessionsData = doc.data()
-        sessionsData.sessionID = doc.id
-        sessionArray.push(sessionsData)
+      // console.log('Last Visible 1= ',lastVisible)
+
+      querySnap.forEach((doc)=> {
+        let sessionData = doc.data()
+        sessionData.sessionID = doc.id
+        sessionArray.push(sessionData)
       })
-      const sessionsData = sessionArray
-      setSessions([...sessions, ...sessionsData])
-      setStartAfter(sessionsData.lastVisible)
+      // console.log('poppy', sessionArray)
+      return {sessionArray, lastVisible}
     }
 
-    const getMoreUserSessions = async () => {
+    const getMoreUserSessions = async (startAfter,sessionsPerLoad) => {
   
       const sessionArray = [];
       const gotUser = await getUser()
   
-      const querySnap = firestore()
+      const querySnap1 = await firestore()
       .collection('users')
       .doc(gotUser.uid)
       .collection('usersessions')
@@ -63,20 +65,38 @@ const Create3 = () => {
       .limit(sessionsPerLoad)
       .get()
     
-      const lastVisible = querySnap.docs[querySnap.docs.length - 1]
+      const lastVisible = querySnap1.docs[querySnap1.docs.length - 1]
+      console.log('Last Visible 2= ',lastVisible)
 
-      querySnap.forEach((doc)=>{
-        let sessionsData = doc.data()
-        sessionsData.sessionID = doc.id
-        sessionArray.push(sessionsData)
+      querySnap1.forEach((doc)=> {
+        let sessionData = doc.data()
+        sessionData.sessionID = doc.id
+        sessionArray.push(sessionData)
       })
-    if(!lastPost){  
-      const sessionsData = sessionArray
-      setSessions([...sessions, ...sessionsData])
-      setStartAfter(sessionsData.lastVisible)
-        sessionsData.sessionArray.length==0 ? setLastPost(true):setLastPost(false)
+      return {sessionArray, lastVisible}
     }
-  }
+
+    useEffect(()=>{
+        getUserSession()
+      },[])
+
+      const getUserSession = async () => {
+        const sessionsData = await getUserSessions(sessionsPerLoad)
+        setSessions([...sessions, ...sessionsData.sessionArray])
+        // console.log('Sessions',sessions)
+        setStartAfter(sessionsData.lastVisible)
+        // console.log('Last VIsible',sessionsData.lastVisible)
+      }
+    
+      const getMoreUserSession = async () => {
+        if(!lastPost){
+          const sessionsData = await getMoreUserSessions(startAfter,sessionsPerLoad)
+          setSessions([...sessions, ...sessionsData.sessionArray])
+          // console.log('More Session',sessions)
+          setStartAfter(sessionsData.lastVisible)
+          sessionsData.sessionArray.length==0 ? setLastPost(true):setLastPost(false)
+        }
+      }
 
     const copySession = async (item) => {
       const hello = await getUser()
@@ -102,10 +122,10 @@ const Create3 = () => {
               .doc(hello.uid)
               .collection('ongoing')
               .add({
-                title: title,
-                description: description,
-                category: category,
-                totalPar: totalPar,
+                title: item.title,
+                description: item.description,
+                category: item.category,
+                totalPar: item.totalPar,
                 currPar: currPar,
                 createdAt: firestore.FieldValue.serverTimestamp(),
                 crByUsername: hello.username,
@@ -115,7 +135,7 @@ const Create3 = () => {
                 sID: docRef.id
               })
               
-    }
+        }
   
     const copySessionAlert = (item) => {
       Alert.alert(
@@ -127,10 +147,6 @@ const Create3 = () => {
         }]
       )
     }
-  
-    useEffect(()=>{
-      getUserSessions()
-    },[])
   
     const RenderCard = ({item})=>{
       return(
@@ -149,13 +165,14 @@ const Create3 = () => {
           data={sessions}
           renderItem={({item})=><RenderCard item={item} />}
           keyExtractor={(item)=>item.sessionID}
-          onEndReached={getMoreUserSessions}
+          onEndReached={getMoreUserSession}
           onEndReachedThreshold={0.01}
           scrollEventThrottle={150}
           ListFooterComponent={()=>
           !lastPost && <ActivityIndicator />}
        />
-      </View>);
+      </View>
+    );
 }
 
 export default Create3
@@ -166,3 +183,4 @@ const styles = StyleSheet.create({
     },
   });
   
+//Big Change

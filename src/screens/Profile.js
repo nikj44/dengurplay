@@ -38,6 +38,7 @@ const Profile = () => {
       <Text>Email = {profileData.email}</Text>
       <Text>Coins = {profileData.coins}</Text>
       <Text>Diamonds = {profileData.diamonds}</Text>
+      <Text>Profile Num= {profileData.profileNum}</Text>
       </View>
         );
 }

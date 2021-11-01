@@ -5,7 +5,7 @@ import auth from "@react-native-firebase/auth";
 import firestore from '@react-native-firebase/firestore';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-const Chat2 = ({navigation, route}) => {
+const Chat3 = ({navigation, route}) => {
     // console.log("mooko", route)
     const [messages, setMessages] = useState([]);
     const {item} = route.params
@@ -90,12 +90,12 @@ const Chat2 = ({navigation, route}) => {
         .doc(sessionID)
         .delete()
 
-        // console.log('ITEM KEY',item.key)
+        console.log('ITEM KEY',item.key)
         firestore()
         .collection('sessions')
-        .doc(item.sID)
+        .doc(item.key)
         .update({
-          currPar: firestore.FieldValue.increment(-1)
+        currPar: firestore.FieldValue.increment(-1)
         })
 
 
@@ -187,7 +187,7 @@ const Chat2 = ({navigation, route}) => {
     );
 }
 
-export default Chat2
+export default Chat3
 
 const styles = StyleSheet.create({
   modalContent: {
