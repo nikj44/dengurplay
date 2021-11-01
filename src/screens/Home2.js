@@ -78,7 +78,8 @@ const Home2 = ({route, navigation}) => {
         collection('users')
         .doc(gotUser.uid)
         .collection('ongoing')
-        .add({
+        .doc(item.key)
+        .set({
             title: item.title,
             description: item.description,
             category: item.category,

@@ -121,7 +121,8 @@ const Create3 = () => {
                .collection('users')
               .doc(hello.uid)
               .collection('ongoing')
-              .add({
+              .doc(docRef.id)
+              .set({
                 title: item.title,
                 description: item.description,
                 category: item.category,
@@ -132,7 +133,6 @@ const Create3 = () => {
                 crByUid: hello.uid,
                 crByProfile: hello.profileNum,
                 status: status,
-                sID: docRef.id
               })
               
         }

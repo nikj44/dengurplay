@@ -93,7 +93,7 @@ const Chat2 = ({navigation, route}) => {
         // console.log('ITEM KEY',item.key)
         firestore()
         .collection('sessions')
-        .doc(item.sID)
+        .doc(sessionID)
         .update({
           currPar: firestore.FieldValue.increment(-1)
         })

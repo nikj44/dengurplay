@@ -100,7 +100,7 @@ const Chat3 = ({navigation, route}) => {
 
 
         try{
-          navigation.goBack()
+          navigation.navigate('MainTab')
           console.log('navigation success')
         }catch{
           console.log('navigation failed')

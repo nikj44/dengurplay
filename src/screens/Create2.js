@@ -91,7 +91,8 @@ const Create2 = () => {
                .collection('users')
               .doc(gotUser.uid)
               .collection('ongoing')
-              .add({
+              .doc(docRef.id)
+              .set({
                 title: title,
                 description: description,
                 category: category,
@@ -102,7 +103,6 @@ const Create2 = () => {
                 crByUsername: gotUser.username,
                 crByProfile: gotUser.profileNum,
                 status: status,
-                sID: docRef.id
               })
 
           setLoading(false)
