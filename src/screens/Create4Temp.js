@@ -10,7 +10,7 @@ import auth from '@react-native-firebase/auth';
 const Create3 = () => {
     const [sessions,setSessions] = useState(new Array());
     const [status, setStatus] = useState(0);
-    const [currPar,setCurrPar] = useState(0);
+    const [currPar,setCurrPar] = useState(1);
     const [sessionsPerLoad] = useState(12)
     const [startAfter,setStartAfter] = useState(Object)
     const [lastPost,setLastPost] = useState(false)
