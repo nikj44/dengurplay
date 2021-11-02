@@ -91,6 +91,25 @@ const Home2 = ({route, navigation}) => {
             totalPar: item.totalPar,
         })
 
+        //if session already exists in users. ongoing, then dont increment coins, else increment coins
+        //20 coins
+        await firestore()
+        .collection('users')
+        .doc(gotUser.uid)
+        .collection('ongoing')
+        // .doc(item.key)
+        .get()
+        .then(doc => {
+          if(!doc.exists){
+            firestore()
+            .collection('users')
+            .doc(gotUser.uid)
+            .update({
+              coins: firestore.FieldValue.increment(20)
+            })
+          }
+        })
+
       } catch(err){
         console.log("Errr", err)
         alert(err)

@@ -40,7 +40,8 @@ const Chat = ({navigation, route}) => {
         })
         setSessions(sessionArray)
         setLoading(false)
-        try{
+        // try{
+
         querySnap.docChanges().forEach((change)=>{
           if(change.type === "modified"){
             if(change.doc.data().currPar == 0){
@@ -51,7 +52,7 @@ const Chat = ({navigation, route}) => {
               .doc(change.doc.id)
               .delete()
             }
-
+            
             const minusDate = nowDate - change.doc.data().createdAt.toDate()
             const minusHours = minusDate/3600000
             if (minusHours > 500 && change.doc.data().currPar == 1){
@@ -65,9 +66,6 @@ const Chat = ({navigation, route}) => {
           }
 
         })
-      }catch{
-        console.log('Error at Chat Page HEre')
-      }
       })   
     }
   

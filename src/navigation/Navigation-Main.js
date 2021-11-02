@@ -27,6 +27,7 @@ import UserData from '../screens/UserData.js';
 import CreateScreen3 from '../screens/createscreen3';
 import HomeScreen from '../screens/homescreen';
 import Chat3 from '../screens/Chat3';
+import Profile2 from '../screens/Profile2';
 
 
 const Navigation = () => {
@@ -66,7 +67,7 @@ const MyTabs = () => {
         return(<Icon name="chatbox-ellipses-outline" color="black" size={25} />);},
         title: 'Chat'
       }}/>
-      <Tab.Screen name="Profile" component={Profile} options={{tabBarIcon: () => {
+      <Tab.Screen name="Profile" component={Profile2} options={{tabBarIcon: () => {
         return(<Icon name="person-outline" color="black" size={25} />);},
         title: 'Profile',
         headerRight:()=><Icon

@@ -6,8 +6,9 @@ import {
 } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
+import { showMessage, hideMessage } from "react-native-flash-message";
 
-const Create3 = () => {
+const Create3 = ({navigation}) => {
     const [sessions,setSessions] = useState(new Array());
     const [status, setStatus] = useState(0);
     const [currPar,setCurrPar] = useState(1);
@@ -101,6 +102,51 @@ const Create3 = () => {
     const copySession = async (item) => {
       const hello = await getUser()
 
+                    //set coins= 20* toitalpar
+                    var coins = 20 * item.totalPar
+                    //read users coins, if its less, give warning, and ask to reduce totalpar
+                    await firestore()
+                    .collection('users')
+                    .doc(hello.uid)
+                    .get()
+                    .then(docSnap => {
+                      console.log('querysnapshot',docSnap)
+                      // setProfileData(docSnap._data)
+                       userCoins = docSnap._data
+                       userCoins = userCoins.coins
+                       console.log('User Coins2',userCoins)
+                      })
+                    // const usercoins = profileData.coins
+                    console.log('User Coins3',userCoins)
+                    console.log('COins',coins)
+                    if(coins > userCoins){
+                      //show warning
+                      showMessage({
+                        message: "Coins exceeded",
+                        description: "Join other rooms to gain coins!😑",
+                        type: "warning",
+                        duration: 2500,
+                      });
+                      navigation.navigate('MainTab')
+                    }else{
+      
+                                            //deduct coins
+                            firestore()
+                            .collection('users')
+                            .doc(hello.uid)
+                            .update({
+                              coins: firestore.FieldValue.increment(-1*coins)
+                            })
+
+                            showMessage({
+                              message: "Congrats! Room is created",
+                              description: "Coins deducted! Let's wait for other participants to join  🥰",
+                              type: "success",
+                              duration: 2500,
+                            });
+                            console.log('COins deducted!')
+      
+
       const docRef = await firestore()
             .collection('sessions')
             .add({
@@ -135,6 +181,9 @@ const Create3 = () => {
                 status: status,
               })
               
+          await navigation.navigate('Chat')
+            }
+
         }
   
     const copySessionAlert = (item) => {

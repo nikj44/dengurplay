@@ -81,6 +81,43 @@ const Create3 = () => {
     const copySession = async (item) => {
       const hello = await getUser()
 
+              //set coins= 20* toitalpar
+              var coins = 20 * item.totalPar
+              //read users coins, if its less, give warning, and ask to reduce totalpar
+              await firestore()
+              .collection('users')
+              .doc(gotUser.uid)
+              .get()
+              .then(docSnap => {
+                console.log('querysnapshot',docSnap)
+                // setProfileData(docSnap._data)
+                 userCoins = docSnap._data
+                 userCoins = userCoins.coins
+                 console.log('User Coins2',userCoins)
+                })
+              // const usercoins = profileData.coins
+              console.log('User Coins3',userCoins)
+              console.log('COins',coins)
+              if(coins > userCoins){
+                //show warning
+                showMessage({
+                  message: "Coins exceeded",
+                  description: "Join other rooms to gain coins!😑",
+                  type: "warning",
+                  duration: 2500,
+                });
+                navigation.navigate('MainTab')
+              }else{
+
+                                      //deduct coins
+                      firestore()
+                      .collection('users')
+                      .doc(gotUser.uid)
+                      .update({
+                        coins: firestore.FieldValue.increment(-1*coins)
+                      })
+                      console.log('COins deducted!')
+
       const docRef = await firestore()
             .collection('sessions')
             .add({
@@ -116,6 +153,7 @@ const Create3 = () => {
               })
               
     }
+  }
   
     const copySessionAlert = (item) => {
       Alert.alert(

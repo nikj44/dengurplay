@@ -5,8 +5,11 @@ import { TextInput,Button } from 'react-native-paper';
 import {Picker} from '@react-native-picker/picker';
 import firestore from '@react-native-firebase/firestore';
 import auth from "@react-native-firebase/auth";
+import Navigation from '../navigation/Navigation-Main';
+import profiledata from '../data/profiledata';
+import { showMessage, hideMessage } from "react-native-flash-message";
 
-const Create2 = () => {
+const Create2 = ({navigation}) => {
     // console.log('User',user)
     const [title,setTitle] = useState('');
     const [description,setDescription] = useState('');
@@ -15,6 +18,8 @@ const Create2 = () => {
     const [loading,setLoading] = useState(false);
     const [status,setStatus] = useState(0);
     const [currPar,setCurrPar] = useState(1);
+    // const [coins,setCoins] = useState(0);
+    const [profileData,setProfileData] = useState('')
     // const [sessionID,setSessionID] = useState('')
 
     if(loading){
@@ -39,14 +44,62 @@ const Create2 = () => {
     }
 
     //Create a session
-    const newCreate = async () => {
+    const newCreate = async ({navigation}) => {
+      const gotUser = await getUser()
+      var userCoins = 0
       setLoading(true)
       if(!title || !description || !category || !totalPar){
           alert("Fill all the details")
           setLoading(false)
           return
         }
+        //set coins= 20* toitalpar
+        var coins = 20 * totalPar
+        //read users coins, if its less, give warning, and ask to reduce totalpar
+        await firestore()
+        .collection('users')
+        .doc(gotUser.uid)
+        .get()
+        .then(docSnap => {
+          console.log('querysnapshot',docSnap)
+          // setProfileData(docSnap._data)
+           userCoins = docSnap._data
+           userCoins = userCoins.coins
+           console.log('User Coins2',userCoins)
+          })
+        // const usercoins = profileData.coins
+        console.log('User Coins3',userCoins)
+        console.log('COins',coins)
+        if(coins > userCoins){
+          //show warning
+          showMessage({
+            message: "Coins exceeded",
+            description: "Join other rooms to gain coins!😑",
+            type: "warning",
+            duration: 2500,
+          });
+          navigation.navigate('MainTab')
+        }else{
+          //deduct coins
+          firestore()
+          .collection('users')
+          .doc(gotUser.uid)
+          .update({
+            coins: firestore.FieldValue.increment(-1*coins)
+          })
+
+          showMessage({
+            message: "Congrats! Room is created",
+            description: "Coins deducted! Let's wait for other participants to join  🥰",
+            type: "success",
+            duration: 2500,
+          });
+          console.log('COins deducted!')
+        
+        //or else reduce the number of coins
+        //after deducting tell user - couns deducted!!
       try{
+        console.log('Performing operations')
         //creating a doc in sessions
         const gotUser = await getUser()
         const docRef = await firestore()
@@ -106,11 +159,13 @@ const Create2 = () => {
               })
 
           setLoading(false)
+          navigation.navigate('Chat')
       } catch(err){
         alert(err)
         console.log('main error',err)
         setLoading(false)
       }
+    }
     }
 
 return(
@@ -166,7 +221,7 @@ return(
     <Button
       mode="contained"
       style={{width:250, marginBottom: 70}}
-      onPress={()=>newCreate()}
+      onPress={()=>newCreate({navigation})}
       >Start RP
     </Button>
     </View>
