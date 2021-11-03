@@ -94,3 +94,5 @@ FOr ex. 3/5- stay at homeoage
 
 Chat Page
 Whenever someone joins the chat
+
+i havr setup push notifications settings, in next release will work on push notifications more - 03-11-2021
