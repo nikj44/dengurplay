@@ -28,7 +28,7 @@ import CreateScreen3 from '../screens/createscreen3';
 import HomeScreen from '../screens/homescreen';
 import Chat3 from '../screens/Chat3';
 import Profile2 from '../screens/Profile2';
-import PushNotification from "react-native-push-notification";
+// import PushNotification from "react-native-push-notification";
 
 
 const Navigation = () => {
@@ -100,14 +100,14 @@ const MainStack = () => {
 };
 
 
- const createChannels = () => {
-   PushNotification.createChannel(
-     {
-       channelId:"test-channel",
-       channelName:"Test Channel"
-     }
-   )
- }
+//  const createChannels = () => {
+//    PushNotification.createChannel(
+//      {
+//        channelId:"test-channel",
+//        channelName:"Test Channel"
+//      }
+//    )
+//  }
 
 // const AuthStack = () => {
 //     return(
@@ -236,7 +236,7 @@ const UserData = (props) => {
     return ()=>{
       unregister()
     }
-    createChannels()
+    // createChannels()
 },[])
 return (
   //If User Exists check, (if its new then UserData else Mainstack) else Auth

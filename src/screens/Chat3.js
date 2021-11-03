@@ -31,10 +31,10 @@ const Chat3 = ({navigation, route}) => {
     //   })
     //   setMessages(allmsg)
     // }
-    useEffect(() => {
+    useEffect(async () => {
       // getAllMessages()
       console.log('first session id',sessionID)
-       const messageRef = firestore().collection('main')
+       const messageRef = await firestore().collection('main')
       .doc(sessionID)
       .collection('messages')
       .orderBy('createdAt','desc')
@@ -56,6 +56,9 @@ const Chat3 = ({navigation, route}) => {
   
           })
           setMessages(allmsg)
+          return () => {
+            setMessages({}); // This worked for me
+          };
         })
       }, [])
   

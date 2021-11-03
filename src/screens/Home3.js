@@ -4,6 +4,8 @@ import firestore from '@react-native-firebase/firestore';
 import Icon from "react-native-vector-icons/Ionicons";
 import { showMessage, hideMessage } from "react-native-flash-message";
 import auth from '@react-native-firebase/auth';
+// import PushNotification from "react-native-push-notification";
+
 
 const Home3 = ({navigation}) => {
 
@@ -32,7 +34,7 @@ const Home3 = ({navigation}) => {
 
           //change type webverison 8 
           //https://firebase.google.com/docs/firestore/query-data/listen#web-version-8_4
-          querySnap.docChanges().forEach((change)=>{
+           querySnap.docChanges().forEach((change)=>{
             if(change.type === "modified") {
               // console.log('Got changes in documents !')
               // console.log("Modified city: ", change.doc.data())
@@ -44,14 +46,20 @@ const Home3 = ({navigation}) => {
                 .delete()
               }
 
-              const minusDate = nowDate - change.doc.data().createdAt.toDate()
-              const minusHours = minusDate/3600000
-              if (minusHours > 500 && change.doc.data().currPar == 1){
-                firestore()
-                .collection('sessions')
-                .doc(change.doc.id)
-                .delete()
+              try{
+                const minusDate = nowDate - change.doc.data().createdAt.toDate()
+                const minusHours = minusDate/3600000
+                if (minusHours > 500 && change.doc.data().currPar == 1){
+                   firestore()
+                  .collection('sessions')
+                  .doc(change.doc.id)
+                  .delete()
+                }
+              }catch(err){
+                console.log('Error is in Home 3 Here',err)
               }
+
+
               // console.log('todate',change.doc.data().createdAt.toDate() )
               // console.log('todate',nowDate)
               // console.log('date-minus',nowDate - change.doc.data().createdAt.toDate())
@@ -101,6 +109,20 @@ const Home3 = ({navigation}) => {
     //     type: "warning",
     //   });
   }
+    
+
+      // const handleNotification = () => {
+    //   PushNotification.localNotificationSchedule({
+    //     channelId: "test-channel",
+    //     title: "Start your story room!",
+    //     message: "Create and collab woth others on your imagination!",
+    //     bigText: "Enjoy your story time!",
+    //     color: "green",
+
+    //     allowWhileIdle: false,
+    //   })
+    // }
+
 
       const RenderCard = ({item})=>{
         return(

@@ -96,3 +96,6 @@ Chat Page
 Whenever someone joins the chat
 
 i havr setup push notifications settings, in next release will work on push notifications more - 03-11-2021
+i have uninsdtalled push noti lib
+i have some settings regarding push notification in place - havent removed anything, just commented some tings, just have to use the 
+handle notificaiton function, and install the library

@@ -101,7 +101,7 @@ const Home2 = ({route, navigation}) => {
         .get()
         .then(doc => {
           if(!doc.exists){
-            firestore()
+           firestore()
             .collection('users')
             .doc(gotUser.uid)
             .update({

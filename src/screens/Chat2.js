@@ -31,15 +31,15 @@ const Chat2 = ({navigation, route}) => {
     //   })
     //   setMessages(allmsg)
     // }
-    useEffect(() => {
+    useEffect(async () => {
       // getAllMessages()
       console.log('first session id',sessionID)
-       const messageRef = firestore().collection('main')
+       const messageRef = await firestore().collection('main')
       .doc(sessionID)
       .collection('messages')
       .orderBy('createdAt','desc')
   
-      messageRef.onSnapshot((querySnap)=>{
+       messageRef.onSnapshot((querySnap)=>{
         const allmsg = querySnap.docs.map(docSnap=>{
           const data = docSnap.data()
           if(data.createdAt){
@@ -56,6 +56,9 @@ const Chat2 = ({navigation, route}) => {
   
           })
           setMessages(allmsg)
+          return () => {
+            setMessages({}); // This worked for me
+          };
         })
       }, [])
   
@@ -80,10 +83,10 @@ const Chat2 = ({navigation, route}) => {
        .add({...mymsg,createdAt:firestore.FieldValue.serverTimestamp()})
       }
 
-      const userleaves = () => {
+      const userleaves = async () => {
         
                   //delete session from users ongoing session
-        firestore()
+        await firestore()
         .collection('users')
         .doc(user.uid)
         .collection('ongoing')
@@ -91,7 +94,7 @@ const Chat2 = ({navigation, route}) => {
         .delete()
 
         // console.log('ITEM KEY',item.key)
-        firestore()
+       await  firestore()
         .collection('sessions')
         .doc(sessionID)
         .update({

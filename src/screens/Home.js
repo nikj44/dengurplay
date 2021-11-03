@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity, 
 import firestore from '@react-native-firebase/firestore';
 import Icon from "react-native-vector-icons/Ionicons";
 import { showMessage, hideMessage } from "react-native-flash-message";
-import PushNotification from "react-native-push-notification";
 
 
 const Home = ({navigation}) => {
@@ -62,17 +61,7 @@ const Home = ({navigation}) => {
       };
     },[])
 
-    // const handleNotification = () => {
-    //   PushNotification.localNotificationSchedule({
-    //     channelId: "test-channel",
-    //     title: "Start your story room!",
-    //     message: "Create and collab woth others on your imagination!",
-    //     bigText: "Enjoy your story time!",
-    //     color: "green",
 
-    //     allowWhileIdle: false,
-    //   })
-    // }
   
     const getSession = async () => {
       const sessionsData = await getSessions(sessionsPerLoad)
