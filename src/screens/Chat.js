@@ -1,11 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import {
   View,
-  Text,
-  StyleSheet, FlatList, TouchableOpacity, Alert, ActivityIndicator
+  Text, FlatList, TouchableOpacity, Alert, ActivityIndicator, Image
 } from 'react-native';
 import firestore, { firebase } from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
+import { picFunction } from '../data/profiledata';
 
 const Chat = ({navigation, route}) => {
     const [sessions,setSessions] = useState(new Array());
@@ -115,23 +115,66 @@ const Chat = ({navigation, route}) => {
       return <ActivityIndicator />;
     }
 
+    const SPACING = 20
+    const AVATAR_SIZE = 60
     const RenderCard = ({item})=>{
       return(
         <TouchableOpacity
           onPress={()=>navigation.navigate('Chat2', {item} )}>
-        <View style={{padding: 10}}>
-          <Text>Title= {item.title}</Text>
-          <Text>Description= {item.description}</Text>
-        </View>
+        <View style={{backgroundColor: '#FFFDD0', marginBottom: SPACING/2, borderRadius: 10, borderWidth: 0.5, borderColor: '#748f8a',
+              shadowColor: "008970", 
+              shadowOpacity: 0.3,
+              shadowRadius: 2,
+              elevation: 3,
+              shadowOffset: {
+                width: 0,
+                height: 10,
+              }
+          }}>
+          <View style={{padding: 10, flexDirection: 'row',}}>
+           <Image
+              style={{ width: AVATAR_SIZE, height: AVATAR_SIZE, borderRadius: 100, borderWidth: 5, marginRight: SPACING}}
+              source={picFunction(item.crByProfile)} 
+            />
+            <View>
+              <Text style={{fontSize: 14, fontWeight: 'normal', color: '#748f8a' }}>{item.crByUsername}</Text>
+              <Text style={{fontSize: 18, fontWeight: 'bold', color: '#008970'}} numberOfLines={1}>{item.title}</Text>
+              {/* <View style={{ justifyContent: 'center'}}> */}
+              <Text style={{fontSize: 15, fontWeight: 'normal', color: '#000000', justifyContent: 'center', backgroundColor: '#99eedf', alignSelf: 'flex-start', borderRadius: 20, paddingHorizontal: 10,}}>{item.category}</Text>
+              {/* </View> */}
+             </View>
+           </View>    
+            <Text style={{fontSize: 15, fontWeight: '300', color: "#000000", paddingHorizontal: 20}} numberOfLines={2}>{item.description}</Text>
+              {/* horizontal line */}
+              <View style={{flexDirection: 'row', alignItems: 'center', paddingTop: 5}}>
+                <View style={{flex: 1, height: 0.5, backgroundColor: '#748f8a',}} />
+                {/* <View>
+                  <Text style={{width: 50, textAlign: 'center'}}></Text>
+                </View> */}
+                {/* <View style={{flex: 1, height: 1, backgroundColor: 'black'}} /> */}
+                </View>
+                
+            {/* <Text>createdbyuid= {item.crByUid}</Text> */}
+            {/* <Text>Profile= {item.crByProfile}</Text> */}
+            <View style={{flexDirection: 'row', marginVertical: 10, justifyContent: 'space-evenly', }}>
+               <Text>{item.currPar} out of {item.totalPar} Players</Text>
+               <Text style={{color: '#008970'}}>{item.currPar == 1 ? `Active` : 'Ongoing'}</Text>
+            </View>
+            {/* <Text>presentNumber= {item.currPar}</Text> */}
+            {/* <Text>status= {item.status}</Text> */}
+            {/* <Text>sessionID= {item.sessionID}</Text> */}
+            </View>
         </TouchableOpacity>
       )
     }
   
     return(
-      <View style={styles.container}>
-        <Text>Hello Jain</Text>
+      <View style={{backgroundColor: '#99eedf', flex: 1}}>
        <FlatList
           data={sessions}
+          contentContainerStyle={{
+            padding: SPACING/2
+          }}
           renderItem={({item})=><RenderCard item={item} />}
           // keyExtractor={(item)=>item.sessionID+new Date()}
        />
@@ -140,9 +183,3 @@ const Chat = ({navigation, route}) => {
 
 export default Chat
 
-const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-    },
-  });
-  

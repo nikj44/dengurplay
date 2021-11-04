@@ -24,7 +24,7 @@ export default function App() {
   return (
     <>
       <PaperProvider theme={theme}>
-      <StatusBar backgroundColor="#00FF00" />
+      <StatusBar backgroundColor="#FFFFFF" />
       <Navigation />
       </PaperProvider>
       {/* FLash message will be last component */}

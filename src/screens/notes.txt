@@ -99,3 +99,25 @@ i havr setup push notifications settings, in next release will work on push noti
 i have uninsdtalled push noti lib
 i have some settings regarding push notification in place - havent removed anything, just commented some tings, just have to use the 
 handle notificaiton function, and install the library
+
+animal size = approx 650 , 600 in canva
+
+colors-
+Company colors-
+#008970
+remove this -> #99eedf
+#748f8a
+#000000
+#FFFDD0
+#ffffff
+#59ffe6
+
+
+
+#00ffe5
+#00D7D1
+#32CD32
+#CEFA05
+#CC8899
+
+

@@ -51,10 +51,18 @@ const Tab = createBottomTabNavigator();
 const MyTabs = () => {
 
   return (
-    <Tab.Navigator>
+    <Tab.Navigator 
+        screenOptions={{
+          tabBarActiveTintColor: '#000000',
+          tabBarActiveBackgroundColor: '#59ffe6',
+          // headerStyle: {
+          //   borderColor: 'blue',
+          // }
+        }}  
+        >
       <Tab.Screen name="Home" component={Home3} options={{tabBarIcon: () => {
         return(<Icon name="home-outline" color="black" size={25} />);},
-        title: 'Active RPGs'
+        title: 'Active RPGs' 
       }}/>
       <Tab.Screen name="Read" component={Read} options={{tabBarIcon: () => {
         return(<Icon name="book-outline" color="black" size={25} />);},

@@ -1,8 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {
   View,
-  Text,
-  StyleSheet, FlatList, TouchableOpacity, Alert, ActivityIndicator
+  Text, FlatList, TouchableOpacity, Alert, ActivityIndicator
 } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
@@ -196,22 +195,36 @@ const Create3 = ({navigation}) => {
         }]
       )
     }
-  
+    const SPACING = 20
     const RenderCard = ({item})=>{
       return(
         <TouchableOpacity onPress={()=> copySessionAlert(item)}>
-        <View style={{padding: 10}}>
-          <Text>Title= {item.title}</Text>
-          <Text>Description= {item.description}</Text>
+        <View 
+          style={{backgroundColor: '#FFFDD0', marginBottom: SPACING/2, borderRadius: 10, borderWidth: 0.5, borderColor: '#748f8a',
+          shadowColor: "008970", 
+          shadowOpacity: 0.3,
+          shadowRadius: 2,
+          elevation: 3,
+          shadowOffset: {
+            width: 0,
+            height: 10,
+          }
+          }}>
+          <Text style={{fontSize: 18, fontWeight: 'bold', color: '#008970', padding: 10, paddingBottom: 5}} numberOfLines={1}>{item.title}</Text>
+          <Text style={{fontSize: 15, fontWeight: '300', color: "#000000", paddingHorizontal: 20, paddingBottom: 5}} numberOfLines={3}>{item.description}</Text>
+          <Text style={{fontSize: 15, fontWeight: '400', color: "#000000", paddingHorizontal: 20}}>Total Participants: {item.totalPar}</Text>
         </View>
         </TouchableOpacity>
       )
     }
   
     return(
-      <View style={styles.container}>
+      <View style={{backgroundColor: '#99eedf', flex: 1}}>
        <FlatList
           data={sessions}
+          contentContainerStyle={{
+            padding: SPACING/2
+          }}
           renderItem={({item})=><RenderCard item={item} />}
           keyExtractor={(item)=>item.sessionID}
           onEndReached={getMoreUserSession}
@@ -225,11 +238,5 @@ const Create3 = ({navigation}) => {
 }
 
 export default Create3
-
-const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-    },
-  });
   
 //Big Change

@@ -8,6 +8,7 @@ import auth from "@react-native-firebase/auth";
 import Navigation from '../navigation/Navigation-Main';
 import profiledata from '../data/profiledata';
 import { showMessage, hideMessage } from "react-native-flash-message";
+import { picFunction } from '../data/profiledata';
 
 const Create2 = ({navigation}) => {
     // console.log('User',user)
@@ -167,14 +168,14 @@ const Create2 = ({navigation}) => {
       }
     }
     }
-
 return(
   <ScrollView>
     <Text style={styles.text}>Create your roleplay room</Text>
     <View style={styles.box1}>
-    <Image style={styles.img} source={require("../assets/images/profile.jpg")} />
+    <Image style={styles.img} source={picFunction(async ()=>await getUser.profileNum)} />
     <TextInput
       label="Title"
+      maxLength={20}
       value={title}
       onChangeText={(text)=>setTitle(text)}
       mode="outlined"
@@ -184,6 +185,7 @@ return(
     <View style={styles.box2}>
     <TextInput
       label="Description"
+      maxLength={300}
       value={description}
       onChangeText={(text)=>setDescription(text)}
       mode="outlined"

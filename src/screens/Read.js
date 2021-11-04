@@ -76,20 +76,27 @@ const Read = ({navigation}) => {
         sessionsData.sessionArray.length==0 ? setLastPost(true):setLastPost(false)
       }
     }
-  
+
+    const SPACING = 20
     const RenderCard = ({item})=>{
       return(
         <TouchableOpacity onPress={()=>navigation.navigate('Read2', {item})}>
-        <View style={{padding: 10}}>
-          <Text>Title= {item.title}</Text>
-          <Text>CreatedBy= {item.createdBy}</Text>
-          <Text>Description= {item.description}</Text>
-          <Text>Category= {item.category}</Text>
-          <Text>createdbyuid= {item.createdByUid}</Text>
-          <Text>At= {item.createdAt.toLocaleString()}</Text>
-          <Text>fav Color= {item.favcolor}</Text>
-          <Text>characterNumber= {item.characterNumber}</Text>
-          <Text>status= {item.status}</Text>
+        <View 
+          style={{backgroundColor: '#FFFDD0', marginBottom: SPACING/2, borderRadius: 10, borderWidth: 0.5, borderColor: '#748f8a',
+          shadowColor: "008970", 
+          shadowOpacity: 0.3,
+          shadowRadius: 2,
+          elevation: 3,
+          shadowOffset: {
+            width: 0,
+            height: 10,
+          },
+          padding: 10,
+        }}
+        >
+          <Text style={{fontSize: 18, fontWeight: 'bold', color: '#008970'}} numberOfLines={1}>{item.title}</Text>
+          <Text style={{fontSize: 15, fontWeight: 'normal', color: '#000000', justifyContent: 'center', backgroundColor: '#99eedf', alignSelf: 'flex-start', borderRadius: 20, paddingHorizontal: 10,}}>{item.category}</Text>
+          <Text style={{fontSize: 15, fontWeight: '300', color: "#000000", paddingHorizontal: 20}} numberOfLines={2}>{item.description}</Text>
         </View>
         </TouchableOpacity>
   
@@ -98,9 +105,12 @@ const Read = ({navigation}) => {
   
   
   return(
-    <View>
+    <View style={{backgroundColor: '#99eedf', flex: 1}}>
       <FlatList
         data={sessions}
+        contentContainerStyle={{
+          padding: SPACING/2
+        }}
         renderItem={({item})=><RenderCard item={item} />}
         keyExtractor={(item)=>item.sessionID+new Date()}
         onEndReached={getMoreSession}
