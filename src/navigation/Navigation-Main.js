@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity, ScrollView } from 'react-native';
 import { TextInput, Button  } from 'react-native-paper';
-import profiledata from '../data/profiledata';
+import {profiledata} from '../data/profiledata';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -28,6 +28,7 @@ import CreateScreen3 from '../screens/createscreen3';
 import HomeScreen from '../screens/homescreen';
 import Chat3 from '../screens/Chat3';
 import Profile2 from '../screens/Profile2';
+import OnboardingScreen from '../screens/Onboarding';
 // import PushNotification from "react-native-push-notification";
 
 
@@ -40,7 +41,7 @@ const Navigation = () => {
     const [newEmail,setNewEmail] = useState(null);
 
     //these for UserData
-    const [username, setUsername] = useState('');
+    const [username, setUsername] = useState(null);
     const [coins, setCoins] = useState(200);
     const [diamonds, setDiamonds] = useState(0);
     const [profileNum,setProfileNum] = useState(1);
@@ -62,19 +63,36 @@ const MyTabs = () => {
         >
       <Tab.Screen name="Home" component={Home3} options={{tabBarIcon: () => {
         return(<Icon name="home-outline" color="black" size={25} />);},
-        title: 'Active RPGs' 
+        title: 'Active RPGs',
+        headerTitleStyle: {
+          color: '#008970',
+          marginLeft: 100,
+          // height: 40,
+        }
       }}/>
       <Tab.Screen name="Read" component={Read} options={{tabBarIcon: () => {
         return(<Icon name="book-outline" color="black" size={25} />);},
-        title: 'Read'
+        title: 'Read',
+        headerTitleStyle: {
+          color: '#008970',
+          marginLeft: 140
+        }
     }}/>
       <Tab.Screen name="Create" component={Create} options={{ 
       tabBarIcon: () => {return(<Icon name="add-circle-outline" color="black" size={25} />);},
-      title: 'Create'
+      title: 'Create',
+      headerTitleStyle: {
+        color: '#008970',
+        marginLeft: 140
+      }
      }}/>
       <Tab.Screen name="Chat" component={Chat} options={{tabBarIcon: () => {
         return(<Icon name="chatbox-ellipses-outline" color="black" size={25} />);},
-        title: 'Chat'
+        title: 'Chat',
+        headerTitleStyle: {
+          color: '#008970',
+          marginLeft: 140
+        }
       }}/>
       <Tab.Screen name="Profile" component={Profile2} options={{tabBarIcon: () => {
         return(<Icon name="person-outline" color="black" size={25} />);},
@@ -82,9 +100,13 @@ const MyTabs = () => {
         headerRight:()=><Icon
         name="log-out-outline"
         size={34}
-        color="black"
+        color='#008970'
         style={{marginRight:10}}
-        onPress={()=>auth().signOut()}/>
+        onPress={()=>auth().signOut()}/>,
+        headerTitleStyle: {
+          color: '#008970',
+          marginLeft: 140
+        }
       }}/>
     </Tab.Navigator>
   );
@@ -103,6 +125,15 @@ const MainStack = () => {
       <Screen name="Read2" component={Read2} options={{ title: 'Read2'}}/>
       <Screen name="UserData" component={UserData} options={{ title: 'UserData'}}/>
 
+    </Navigator>
+  );
+};
+
+const LoginStack = () => {
+  return(
+    <Navigator>
+      <Screen name="Onboarding" component={OnboardingScreen} options={{headerShown:false}}/>
+      <Screen name="Auth" component={Auth} options={{headerShown:false}} />
     </Navigator>
   );
 };
@@ -130,19 +161,20 @@ const MainStack = () => {
 //UserData = for inputtig data for new Users
 const UserData = (props) => {
 
-  const tempName = props.username
+  // const tempName = props.username
+  // console.log('tempname Line',tempName)
 
-  const [tempUser,setTempUser] = useState(tempName)
+  // const [tempUser,setTempUser] = useState(tempName)
   const submitInfo = async () => {
-    //if all Info is not entered
-    // if(!username || !profileNum){
-    //   alert("Please fill all the details")
-    //   return
-    // }
+    // if all Info is not entered
+    if(!username || !profileNum){
+      alert("Please fill all the details")
+      return
+    }
     try{
       //If Doc named "User.Uid" exists, then user is not new
         await firestore().collection('users').doc(newUid).set({
-          username:tempUser,
+          username:username,
           email:newEmail,
           uid:newUid,
           coins:coins,
@@ -155,49 +187,50 @@ const UserData = (props) => {
       console.log('Errrr',err)
     }
   }
-
-  //Component for Profile
-  const ProfilePic = ({item}) => {
-    return (
-      <TouchableOpacity onPress={()=>setProfileNum(item.picOption)}>
-        <View style={{ flex: 1}}>
-        <Image
-        style={{ width: 80, height: 80, borderRadius: 100, borderWidth: 5}}
-        source={item.picUrl} />
-        </View>
-        </TouchableOpacity>
-      )
-    }
     
-  useEffect(()=>{
-    console.log(tempName)
-  },[tempName])
+  // useEffect(()=>{
+  //   console.log(tempName)
+  // },[tempName])
+
+    //Component for Profile
+    const ProfilePic = ({item}) => {
+      return (
+        <TouchableOpacity onPress={()=>setProfileNum(item.picOption)}>
+          <View style={{ flex: 1}}>
+          <Image
+          style={{ width: 80, height: 80, borderRadius: 100, borderWidth: 5, margin: 3}}
+          source={item.picUrl} />
+          </View>
+          </TouchableOpacity>
+        )
+      }
 
     // UserData Return
   return (
-      <View>
-        {/* <View> */}
-         <Text>Enter details !!</Text>
+      <View style={{backgroundColor: '#FFFDD0', flex: 1}}>
+         <Text style={{fontSize: 18, fontWeight: 'bold', color: '#008970', alignSelf: 'center', marginVertical: 10}}>Enter details !!</Text>
           <TextInput
             label="Username"
-            value={tempUser}
-            onChangeText={(text)=>setTempUser(text)}
+            value={username}
+            onChangeText={(text)=>setUsername(text)}
             mode="outlined"
+            style={{marginVertical: 10}}
             />
-        {/* </View>
-        <View> */}
-        <FlatList
+            <View>
+            <FlatList
             keyExtractor={item=> item.picOption}
             numColumns={4}
-            // style={{flex: 1}}
             data={profiledata}
             renderItem={ProfilePic}
+            style={{alignSelf: 'center'}}
           />
-          {/* </View> */}
-          <Button mode="contained" onPress={()=>submitInfo()}>Continue</Button>
+            </View>
+
+          <Button mode="contained" onPress={()=>submitInfo()}
+          color='#008970' 
+          style={{marginHorizontal: 90, borderRadius: 10, }}>Continue</Button>
          </View>
   )
-
 }
 
 
@@ -249,7 +282,7 @@ const UserData = (props) => {
 return (
   //If User Exists check, (if its new then UserData else Mainstack) else Auth
   <NavigationContainer>
-    {user ?  (newUser==1 ?  <UserData />  : (newUser==0 && <MainStack /> ))  : <Auth />}
+    {user ?  (newUser==1 ?  <UserData />  : (newUser==0 && <MainStack /> ))  : <LoginStack />}
   </NavigationContainer>
 );
 };

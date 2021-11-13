@@ -35,7 +35,7 @@ const Home3 = ({navigation}) => {
 
           //change type webverison 8 
           //https://firebase.google.com/docs/firestore/query-data/listen#web-version-8_4
-           querySnap.docChanges().forEach((change)=>{
+           querySnap.docChanges().forEach(async (change)=>{
             if(change.type === "modified") {
               // console.log('Got changes in documents !')
               // console.log("Modified city: ", change.doc.data())
@@ -48,7 +48,7 @@ const Home3 = ({navigation}) => {
               }
 
               try{
-                const minusDate = nowDate - change.doc.data().createdAt.toDate()
+                const minusDate = nowDate - await change.doc.data().createdAt.toDate()
                 const minusHours = minusDate/3600000
                 if (minusHours > 500 && change.doc.data().currPar == 1){
                    firestore()
@@ -150,7 +150,7 @@ const Home3 = ({navigation}) => {
               <Text style={{fontSize: 14, fontWeight: 'normal', color: '#748f8a' }}>{item.crByUsername}</Text>
               <Text style={{fontSize: 18, fontWeight: 'bold', color: '#008970'}} numberOfLines={1}>{item.title}</Text>
               {/* <View style={{ justifyContent: 'center'}}> */}
-              <Text style={{fontSize: 15, fontWeight: 'normal', color: '#000000', justifyContent: 'center', backgroundColor: '#99eedf', alignSelf: 'flex-start', borderRadius: 20, paddingHorizontal: 10,}}>{item.category}</Text>
+              <Text style={{fontSize: 15, fontWeight: 'normal', color: '#000000', justifyContent: 'center', backgroundColor: '#59ffe6', alignSelf: 'flex-start', borderRadius: 20, paddingHorizontal: 10,}}>{item.category}</Text>
               {/* </View> */}
              </View>
            </View>    
@@ -179,7 +179,7 @@ const Home3 = ({navigation}) => {
       }
 
       return(
-        <View style={{backgroundColor: '#99eedf', flex: 1}}>
+        <View style={{backgroundColor: '#59ffe6', flex: 1}}>
           <FlatList
             data={sessions}
             contentContainerStyle={{

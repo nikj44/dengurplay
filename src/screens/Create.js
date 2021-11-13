@@ -6,7 +6,7 @@ import { Button } from 'react-native-paper';
 const Create = ({navigation}) => {
   // const navigation = useNavigation();
   return (
-    <View style={{flex: 1,}}>
+    <View style={{flex: 1, backgroundColor: '#FFFDD0'}}>
     <Text style={{fontSize: 18, fontWeight: 'bold', color: '#008970', paddingLeft: 70, padding: 20}}>Create your Story Room!!</Text>
     <Button mode='contained' color='#008970' style={{marginHorizontal: 90, borderRadius: 10, }} onPress={()=>navigation.push('Create2')}>Create New</Button>
     <Text style={{margin: 20, alignSelf: 'center'}}>OR</Text>

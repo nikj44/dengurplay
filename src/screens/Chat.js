@@ -42,7 +42,7 @@ const Chat = ({navigation, route}) => {
         setLoading(false)
         // try{
 
-        querySnap.docChanges().forEach((change)=>{
+        querySnap.docChanges().forEach(async (change)=>{
           if(change.type === "modified"){
             if(change.doc.data().currPar == 0){
               firestore()
@@ -53,7 +53,7 @@ const Chat = ({navigation, route}) => {
               .delete()
             }
             
-            const minusDate = nowDate - change.doc.data().createdAt.toDate()
+            const minusDate = nowDate - await change.doc.data().createdAt.toDate()
             const minusHours = minusDate/3600000
             if (minusHours > 500 && change.doc.data().currPar == 1){
               firestore()
@@ -140,7 +140,7 @@ const Chat = ({navigation, route}) => {
               <Text style={{fontSize: 14, fontWeight: 'normal', color: '#748f8a' }}>{item.crByUsername}</Text>
               <Text style={{fontSize: 18, fontWeight: 'bold', color: '#008970'}} numberOfLines={1}>{item.title}</Text>
               {/* <View style={{ justifyContent: 'center'}}> */}
-              <Text style={{fontSize: 15, fontWeight: 'normal', color: '#000000', justifyContent: 'center', backgroundColor: '#99eedf', alignSelf: 'flex-start', borderRadius: 20, paddingHorizontal: 10,}}>{item.category}</Text>
+              <Text style={{fontSize: 15, fontWeight: 'normal', color: '#000000', justifyContent: 'center', backgroundColor: '#59ffe6', alignSelf: 'flex-start', borderRadius: 20, paddingHorizontal: 10,}}>{item.category}</Text>
               {/* </View> */}
              </View>
            </View>    
@@ -169,7 +169,7 @@ const Chat = ({navigation, route}) => {
     }
   
     return(
-      <View style={{backgroundColor: '#99eedf', flex: 1}}>
+      <View style={{backgroundColor: '#59ffe6', flex: 1}}>
        <FlatList
           data={sessions}
           contentContainerStyle={{

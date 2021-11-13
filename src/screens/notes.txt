@@ -92,6 +92,8 @@ Home Page as long as currPar < TotalPar session homepage par rehta hai
 For ex. 1/1- remove from Home Page
 FOr ex. 3/5- stay at homeoage
 
+()=>{return(<View style={{flex: 0.2}}><Text>Read</Text></View>);}
+
 Chat Page
 Whenever someone joins the chat
 

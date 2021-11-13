@@ -1,7 +1,9 @@
 import React, {useEffect,useState} from 'react'
-import { Button } from 'react-native'
+import {View, Image, ImageBackground } from 'react-native'
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
+import { Button } from 'react-native-paper';
+
 
 const Auth = () => {
     const [user,setUser] = useState('')
@@ -65,10 +67,18 @@ const Auth = () => {
     // },[]);
 
     return (
-        <Button
-          title="Google Sign-In"
+      <View style={{backgroundColor: '#FFFDD0', flex: 1, alignContent: 'center',}}>
+      <ImageBackground source={require('../assets/images/texture.png')} resizeMode="cover" style={{flex: 1, justifyContent: 'center'}} >
+      <Image style={{marginLeft: 75, marginTop: 30, marginBottom: 30, width: 200, height: 200, }} source={require('../assets/images/profiles/pic1.png')} /> 
+      <Button
+          mode='contained' 
+          color='#008970'
+          style={{marginHorizontal: 75, borderRadius: 10, marginTop: 100}}
           onPress={() => googleLogin().then(() => console.log('Signed in with Google!'))}
-        />
+        >Google Sign In</Button>
+        </ImageBackground>
+      </View>
+
       );
 }
 

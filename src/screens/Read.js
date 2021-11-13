@@ -95,7 +95,7 @@ const Read = ({navigation}) => {
         }}
         >
           <Text style={{fontSize: 18, fontWeight: 'bold', color: '#008970'}} numberOfLines={1}>{item.title}</Text>
-          <Text style={{fontSize: 15, fontWeight: 'normal', color: '#000000', justifyContent: 'center', backgroundColor: '#99eedf', alignSelf: 'flex-start', borderRadius: 20, paddingHorizontal: 10,}}>{item.category}</Text>
+          <Text style={{fontSize: 15, fontWeight: 'normal', color: '#000000', justifyContent: 'center', backgroundColor: '#59ffe6', alignSelf: 'flex-start', borderRadius: 20, paddingHorizontal: 10,}}>{item.category}</Text>
           <Text style={{fontSize: 15, fontWeight: '300', color: "#000000", paddingHorizontal: 20}} numberOfLines={2}>{item.description}</Text>
         </View>
         </TouchableOpacity>
@@ -105,7 +105,7 @@ const Read = ({navigation}) => {
   
   
   return(
-    <View style={{backgroundColor: '#99eedf', flex: 1}}>
+    <View style={{backgroundColor: '#59ffe6', flex: 1}}>
       <FlatList
         data={sessions}
         contentContainerStyle={{

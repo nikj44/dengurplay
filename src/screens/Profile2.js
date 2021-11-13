@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet,  } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import auth from "@react-native-firebase/auth";
-import { picFunction } from '../data/profiledata';
+import { picFunction, profiledata } from '../data/profiledata';
 import Icon from "react-native-vector-icons/FontAwesome5";
 import Icon2 from "react-native-vector-icons/FontAwesome";
 

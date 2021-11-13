@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, Button} from 'react-native';
+import {View, Text, StyleSheet,} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import auth from "@react-native-firebase/auth";
+import { Button } from 'react-native-paper';
 
 const Home2 = ({route, navigation}) => {
     const {item} = route.params
@@ -119,16 +120,17 @@ const Home2 = ({route, navigation}) => {
 
     return (
       <View style={styles.container}>
-        <Text>I'm HomeScreen2</Text>
-        <Text>Title = {item.title}</Text>
-        <Text>Description = {item.description}</Text>
-        <Text>ID = {item.key}</Text>
+        <Text style={{fontSize: 18, fontWeight: 'bold', color: '#008970', padding: 10}}>{item.title}</Text>
+        <Text style={{fontSize: 15, fontWeight: '300', color: "#000000", paddingHorizontal: 20, paddingBottom: 20}}>{item.description}</Text>
+        {/* <Text>{item.key}</Text> */}
         <Button
-          title="Chat"
+          mode='contained' 
+          color='#008970' 
+          style={{marginHorizontal: 90, borderRadius: 10, }}
           onPress={() => {
             pressFunction(item)
           }}
-        />
+        >Start Chat</Button>
       </View>
     );
 }
@@ -138,5 +140,6 @@ export default Home2
 const styles = StyleSheet.create({
     container: {
       flex: 1,
+      backgroundColor: '#FFFDD0'
     },
   });

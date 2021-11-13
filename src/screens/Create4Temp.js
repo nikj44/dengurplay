@@ -219,7 +219,7 @@ const Create3 = ({navigation}) => {
     }
   
     return(
-      <View style={{backgroundColor: '#99eedf', flex: 1}}>
+      <View style={{backgroundColor: '#59ffe6', flex: 1}}>
        <FlatList
           data={sessions}
           contentContainerStyle={{
