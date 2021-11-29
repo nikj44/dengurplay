@@ -14,11 +14,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "844083278230-u1uqau5jmi9s0tou7l6mqqq94t5acdbr.apps.googleusercontent.com",
+          "client_id": "844083278230-gvuj8d4b7lrp3ni3rint3cuo0ajbc4du.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.dengurplay",
-            "certificate_hash": "d961572b79e583563fa1ac712662925c9be3b128"
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
           }
         },
         {

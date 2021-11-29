@@ -123,3 +123,24 @@ remove this -> #99eedf
 #CC8899
 
 
+Building APK (18-11-2021) == https://www.youtube.com/watch?v=Wvy8ACbP38I
+
+1) First see the above video
+2) append -storetype JKS after keytool statement in description - bec of 
+  https://stackoverflow.com/questions/67631927/error-building-aab-flutter-android-integrity-check-failed-java-security-n
+3) FOllow ahead in the video
+4) BUILD SUCCESSFULL
+
+TO see SHA1 key, see screnenhsot,in project/android/=>
+ ./gradlew signingReport
+
+ Jab hamne release banaya toh vo demo vali
+  keystore par bana hai, aur dev env debug vale keystore par bana hai.
+
+  Debug keystore - 
+  SHA1: 5E:8F:16:06:2E:A3:CD:2C:4A:0D:54:78:76:BA:A6:F3:8C:AB:F6:25
+SHA-256: FA:C6:17:45:DC:09:03:78:6F:B9:ED:E6:2A:96:2B:39:9F:73:48:F0:BB:6F:89:9B:83:32:66:75:91:03:3B:9C
+
+Demo keystore
+SHA1: D9:61:57:2B:79:E5:83:56:3F:A1:AC:71:26:62:92:5C:9B:E3:B1:28
+SHA-256: D4:D3:37:C2:02:D0:B1:CD:33:9F:3F:C0:A8:71:54:1C:5C:6D:97:AD:48:BB:58:71:B3:EE:20:6F:F0:21:38:C4

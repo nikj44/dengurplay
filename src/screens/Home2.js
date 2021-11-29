@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet,} from 'react-native';
+import {View, Text, StyleSheet, Alert} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import auth from "@react-native-firebase/auth";
 import { Button } from 'react-native-paper';
@@ -118,6 +118,24 @@ const Home2 = ({route, navigation}) => {
       navigation.navigate('Chat3', {item});
     } 
 
+    const startSessionAlert = (item) => {
+      Alert.alert(
+        "Copy this session",
+        "This session will be as it is copied.",
+        [
+          {
+            text: "Cancel",
+            onPress: () => navigation.goBack()
+          },
+          {
+          text: "Sure",
+          onPress: () => pressFunction(item),
+        },
+
+      ]
+      )
+    }
+
     return (
       <View style={styles.container}>
         <Text style={{fontSize: 18, fontWeight: 'bold', color: '#008970', padding: 10}}>{item.title}</Text>
@@ -128,7 +146,7 @@ const Home2 = ({route, navigation}) => {
           color='#008970' 
           style={{marginHorizontal: 90, borderRadius: 10, }}
           onPress={() => {
-            pressFunction(item)
+            startSessionAlert(item)
           }}
         >Start Chat</Button>
       </View>

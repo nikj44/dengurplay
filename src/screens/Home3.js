@@ -50,7 +50,7 @@ const Home3 = ({navigation}) => {
               try{
                 const minusDate = nowDate - await change.doc.data().createdAt.toDate()
                 const minusHours = minusDate/3600000
-                if (minusHours > 500 && change.doc.data().currPar == 1){
+                if (minusHours > 24 && change.doc.data().currPar == 1){
                    firestore()
                   .collection('sessions')
                   .doc(change.doc.id)
@@ -89,13 +89,13 @@ const Home3 = ({navigation}) => {
 
   const NavigateToHome2 = (item, uid) => {
     console.log("ITEM==",item)
-    if(uid != item.crByUid){
+    if(uid == item.crByUid){
       showMessage({
         message: "You only created this room",
         description: "Join this room from Chats",
         type: "warning",
       }); 
-    }else if(item.currPar == item.totalPar){
+    }else if(item.currPar >= item.totalPar){
       showMessage({
             message: "Room is full",
             description: "Pls wait or join other rooms",

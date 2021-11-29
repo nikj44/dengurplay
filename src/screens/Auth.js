@@ -69,11 +69,11 @@ const Auth = () => {
     return (
       <View style={{backgroundColor: '#FFFDD0', flex: 1, alignContent: 'center',}}>
       <ImageBackground source={require('../assets/images/texture.png')} resizeMode="cover" style={{flex: 1, justifyContent: 'center'}} >
-      <Image style={{marginLeft: 75, marginTop: 30, marginBottom: 30, width: 200, height: 200, }} source={require('../assets/images/profiles/pic1.png')} /> 
+      <Image style={{alignSelf: 'center', marginTop: 30, marginBottom: 30, width: 200, height: 200, }} source={require('../assets/images/profiles/pic1.png')} /> 
       <Button
           mode='contained' 
           color='#008970'
-          style={{marginHorizontal: 75, borderRadius: 10, marginTop: 100}}
+          style={{ borderRadius: 10, marginTop: 100, alignSelf: 'center', width: 200}}
           onPress={() => googleLogin().then(() => console.log('Signed in with Google!'))}
         >Google Sign In</Button>
         </ImageBackground>

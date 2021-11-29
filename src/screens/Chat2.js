@@ -173,7 +173,7 @@ const Chat2 = ({navigation, route}) => {
               backgroundColor: "green"
             },
             left: {
-              backgroundColor: "blue"
+              backgroundColor: "yellow"
             }
           }}
         />
